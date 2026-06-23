@@ -195,9 +195,9 @@ GOOGLE_GMAIL_SCOPE = os.environ.get(
     'https://www.googleapis.com/auth/gmail.metadata https://www.googleapis.com/auth/gmail.readonly',
 )
 
-# Gemini API key for the SecBot chatbot
-GEMINI_API_KEY = os.environ.get(
-    'GEMINI_API_KEY',
+# Mistral API key for the SecBot chatbot
+MISTRAL_API_KEY = os.environ.get(
+    'MISTRAL_API_KEY',
     '',
 )
 
