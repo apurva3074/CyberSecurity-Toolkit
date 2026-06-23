@@ -15,6 +15,7 @@ import emailScanImage from '../assets/emailscanimage.svg';
 import metadataImage from '../assets/metadataimage.svg';
 import takedownImage from '../assets/takedownimage.svg';
 
+
 const guides = [
   {
     id: 'url-scanner',
@@ -31,28 +32,29 @@ const guides = [
         title: 'Navigate to URL Scanner',
         description: 'From the dashboard, scroll down to the URL Scanner section or click on it from the tools menu.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Dashboard with URL Scanner section highlighted',
+        mediaSrc: '/URL_SCANNER1.png',
       },
       {
         title: 'Enter the suspicious URL',
         description: 'Type or paste the full URL you want to check into the input field. Include https:// for best results.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: URL input field with example URL entered',
+        mediaSrc: '/URL_SCANNER2.png',
       },
       {
         title: 'Click "Scan URL"',
         description: 'Hit the scan button to analyze the URL. Our AI model evaluates 11+ features including domain age, SSL status, and URL patterns.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Scan button being clicked',
+        mediaSrc: '/URL_SCANNER3.png',
       },
       {
         title: 'Review the results',
         description: 'The scanner will show whether the URL is safe or a phishing threat. If flagged as phishing, avoid visiting the site and consider submitting a takedown request.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Scan results showing safe/phishing verdict',
+        mediaSrc: '/URL_SCANNER4.png',
       },
     ],
   },
+
   {
     id: 'email-scanner',
     title: 'Email Scanner',
@@ -68,28 +70,29 @@ const guides = [
         title: 'Go to Email Scanner',
         description: 'Navigate to the Email Scanner section from the dashboard.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Email Scanner section on dashboard',
+        mediaSrc: '/EMAIL_SCANNER1.png',
       },
       {
         title: 'Paste the email content',
         description: 'Copy the suspicious email content (body text) and paste it into the input area. The more content you provide, the more accurate the analysis.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Email content pasted into scanner',
+        mediaSrc: '/EMAIL_SCANNER2.png',
       },
       {
         title: 'Run the scan',
         description: 'Click the scan button. Our spam detection model uses NLP and TF-IDF vectorization to analyze the text for known spam and phishing patterns.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Scan in progress',
+        mediaSrc: '/EMAIL_SCANNER3.png',
       },
       {
         title: 'Check the verdict',
         description: 'The scanner shows whether the email is ham (safe) or spam/phishing. If flagged, do not click any links in the original email.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Results showing spam/ham classification',
+        mediaSrc: '/EMAIL_SCANNER4.png',
       },
     ],
   },
+
   {
     id: 'metadata-fetcher',
     title: 'Metadata Fetcher',
@@ -105,28 +108,29 @@ const guides = [
         title: 'Open the Metadata Fetcher',
         description: 'Navigate to the Metadata section from the dashboard.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Metadata Fetcher section',
+        mediaSrc: '/METADATA_FETCHER1.png',
       },
       {
         title: 'Enter a domain or URL',
         description: 'Type the website domain you want to investigate (e.g., example.com). The tool works with both full URLs and plain domains.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Domain entered in input field',
+        mediaSrc: '/METADATA_FETCHER2.png',
       },
       {
         title: 'Fetch metadata',
         description: 'Click fetch to retrieve comprehensive information — SSL certificate details, WHOIS registration data, server headers, and security configurations.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Fetch button and loading state',
+        mediaSrc: '/METADATA_FETCHER3.png',
       },
       {
         title: 'Analyze the results',
         description: 'Review the detailed breakdown including SSL validity, domain age, registrar info, server type, and security headers (HSTS, CSP, X-Frame-Options). A risk level is automatically calculated.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Full metadata results with risk assessment',
+        mediaSrc: '/METADATA_FETCHER4.png',
       },
     ],
   },
+
   {
     id: 'takedown',
     title: 'Takedown Request',
@@ -142,35 +146,37 @@ const guides = [
         title: 'Go to Takedown Request',
         description: 'Navigate to the Takedown section from the dashboard.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Takedown Request section',
+        mediaSrc: '/TAKEDOWN_REQUESTS1.png',
       },
       {
         title: 'Enter the malicious URL',
-        description: 'Provide the full URL of the malicious website you want to report. Make sure it\'s the exact URL, not a shortened version.',
+        description: 'Provide the full URL of the malicious website you want to report. Make sure it is the exact URL, not a shortened version.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: URL input field',
+        mediaSrc: '/TAKEDOWN_REQUESTS2.png',
       },
       {
         title: 'Describe the threat',
-        description: 'Write a detailed description of why this site is malicious — is it phishing, distributing malware, running a scam? The more detail, the faster the review.',
+        description: 'Write a detailed description of why this site is malicious — phishing, malware, scam, etc.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Description textarea filled in',
+        mediaSrc: '/TAKEDOWN_REQUESTS3.png',
       },
       {
         title: 'Upload screenshot evidence',
-        description: 'Take a screenshot of the malicious website and upload it as evidence. This helps our admin team verify the threat quickly.',
+        description: 'Take a screenshot of the malicious website and upload it as evidence.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Screenshot upload area with preview',
+        mediaSrc: '/TAKEDOWN_REQUESTS4.png',
       },
       {
         title: 'Submit and track',
-        description: 'Click submit. Your request gets a tracking ID. Our team reviews it, identifies the hosting provider via WHOIS, and sends an abuse report to get the site taken down.',
+        description: 'Click submit. Your request gets a tracking ID and our team reviews the report.',
         mediaType: 'screenshot',
-        mediaPlaceholder: 'Screenshot: Submission confirmation with tracking ID',
+        mediaSrc: '/TAKEDOWN_REQUESTS5.png',
       },
     ],
   },
 ];
+
+
 
 function StepCard({ step, index }) {
   return (

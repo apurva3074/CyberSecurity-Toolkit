@@ -241,10 +241,9 @@ function EmailScanner() {
                                                         <div className="flex items-center gap-2 mt-2">
                                                             <div className="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                                                                 <div
-                                                                    className={`h-full rounded-full transition-all ${
-                                                                        m.phishing_probability > 0.7 ? "bg-red-500" :
+                                                                    className={`h-full rounded-full transition-all ${m.phishing_probability > 0.7 ? "bg-red-500" :
                                                                         m.phishing_probability > 0.4 ? "bg-yellow-500" : "bg-green-500"
-                                                                    }`}
+                                                                        }`}
                                                                     style={{ width: `${Math.max(5, Math.round(m.phishing_probability * 100))}%` }}
                                                                 />
                                                             </div>
