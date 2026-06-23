@@ -1,0 +1,171 @@
+import { useMemo, useState, useEffect } from 'react';
+import { HiOutlineRefresh, HiOutlineX } from 'react-icons/hi';
+
+const SAMPLE_POSTS = [
+    {
+        id: 1,
+        title: 'How to spot a phishing email in 30 seconds',
+        excerpt: 'Quick heuristics and red flags you can use immediately to identify suspicious emails before clicking any link.',
+        content: `Phishing emails often impersonate trusted services and ask for immediate action. Look for mismatched sender addresses, generic greetings, urgent language, and links that don't match their displayed text. Use hover-preview for links and validate attachments on a sandbox. When in doubt, go directly to the service site instead of clicking links.`,
+        author: 'A. Researcher',
+        date: '2025-10-01',
+        tags: ['email', 'phishing', 'security']
+    },
+    {
+        id: 2,
+        title: 'Why URLs lie — decoding shortened links safely',
+        excerpt: 'Short links are convenient, but they hide destination metadata. Learn safe ways to preview and resolve links.',
+        content: `Shortened URLs are opaque. Use preview tools or a resolver service to expand short links before visiting. Check TLS certificates and domain age for suspicious destinations. If an email asks you to sign in via a short link, ignore and go to the site directly.`,
+        author: 'V. Analyst',
+        date: '2025-09-18',
+        tags: ['links', 'privacy']
+    },
+    {
+        id: 3,
+        title: 'Automating takedown requests: best practices',
+        excerpt: 'From evidence collection to legal templates — streamline takedown workflows while keeping audit trails.',
+        content: `Collect screenshots, timestamps, and source URLs. Use standardized templates and send via the platform's preferred channels. Maintain an internal log for follow-ups and escalations. Automate retries and tracking to reduce manual overhead.`,
+        author: 'Legal Team',
+        date: '2025-08-07',
+        tags: ['takedown', 'automation']
+    },
+    {
+        id: 4,
+        title: 'Metadata checks that catch fraud',
+        excerpt: 'Simple metadata checks that often reveal cloned sites, fake emails, and scraped content.',
+        content: `Compare title tags, canonical links, and hosting IP ranges. Look for mismatches between visible content and meta descriptions. Check for copied images with different source URLs — small inconsistencies often reveal scraping or clones.`,
+        author: 'S. Ops',
+        date: '2025-07-22',
+        tags: ['metadata', 'detection']
+    },
+    {
+        id: 5,
+        title: 'Designing a privacy-first scanner',
+        excerpt: 'Principles and trade-offs when building scanning tools that minimize data exposure.',
+        content: `Minimize data retention, centralize sensitive processing, and offer opt-in telemetry. Design interfaces that explain what is shared and why. Favor client-side redaction where possible and provide audit logs for transparency.`,
+        author: 'Product',
+        date: '2025-06-30',
+        tags: ['privacy', 'design']
+    },
+    {
+        id: 6,
+        title: 'Case study: removing a scam network',
+        excerpt: 'A quick summary of a takedown we coordinated and the measurable results over two weeks.',
+        content: `We identified a network of domains and coordinated with hosts, registrars, and payment providers to remove listings. Within two weeks, fraudulent listings dropped by 87% and user reports fell significantly.`,
+        author: 'Case Studies',
+        date: '2025-05-12',
+        tags: ['case study', 'results']
+    }
+];
+
+function shuffle(array) {
+    const a = array.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+export default function Blog() {
+    const [seed, setSeed] = useState(0);
+    const [openPost, setOpenPost] = useState(null);
+
+    const posts = useMemo(() => shuffle(SAMPLE_POSTS).slice(0, 4), [seed]);
+
+    useEffect(() => {
+        function onKey(e) {
+            if (e.key === 'Escape') setOpenPost(null);
+        }
+        window.addEventListener('keydown', onKey);
+        return () => window.removeEventListener('keydown', onKey);
+    }, []);
+
+    return (
+        <section id="blog-section" className="max-w-4xl mx-auto py-16 px-6">
+            <div className="text-center mb-10">
+                <h2 className="text-4xl font-bold text-white mb-3">Blog</h2>
+                <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                    Recent posts and quick guides on cybersecurity best practices.
+                </p>
+            </div>
+
+            <div className="flex justify-end mb-6">
+                <button
+                    onClick={() => setSeed((s) => s + 1)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-sm"
+                >
+                    <HiOutlineRefresh className="w-4 h-4" />
+                    Shuffle Posts
+                </button>
+            </div>
+
+            {posts.length === 0 ? (
+                <div className="text-center py-16">
+                    <p className="text-gray-500">No blog posts available yet.</p>
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    {posts.map((p) => (
+                        <article
+                            key={p.id}
+                            className="bg-white/5 border border-white/10 rounded-xl p-6 hover:border-white/20 transition group cursor-pointer"
+                            onClick={() => setOpenPost(p)}
+                        >
+                            <div className="flex gap-2 mb-3">
+                                {p.tags.slice(0, 3).map((t) => (
+                                    <span key={t} className="bg-purple-500/20 text-purple-400 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">
+                                        {t}
+                                    </span>
+                                ))}
+                            </div>
+                            <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-purple-300 transition">{p.title}</h3>
+                            <p className="text-gray-400 text-sm mb-4 line-clamp-2">{p.excerpt}</p>
+                            <div className="flex items-center justify-between text-xs text-gray-500">
+                                <span>{p.author}</span>
+                                <span>{p.date}</span>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            )}
+
+            {/* Modal */}
+            {openPost && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center animate-fadeIn"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={openPost.title}
+                >
+                    <div className="absolute inset-0 bg-black/70 backdrop-blur-sm animate-fadeIn" onClick={() => setOpenPost(null)} />
+                    <div className="relative max-w-2xl w-full mx-4 bg-[#111119] border border-white/10 rounded-2xl shadow-2xl p-6 sm:p-8 z-10 animate-slideUp max-h-[80vh] overflow-y-auto custom-scrollbar">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                                <div className="flex gap-2 mb-3">
+                                    {openPost.tags.map((t) => (
+                                        <span key={t} className="bg-purple-500/20 text-purple-400 px-2.5 py-0.5 rounded-full text-[10px] font-semibold">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                                <h3 className="text-2xl font-bold text-white">{openPost.title}</h3>
+                                <p className="text-gray-500 text-sm mt-1">{openPost.author} · {openPost.date}</p>
+                            </div>
+                            <button
+                                onClick={() => setOpenPost(null)}
+                                className="text-gray-400 hover:text-white p-1.5 rounded-lg hover:bg-white/10 transition flex-shrink-0"
+                                aria-label="Close"
+                            >
+                                <HiOutlineX className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="text-gray-300 leading-relaxed text-base">
+                            {openPost.content}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </section>
+    );
+}

@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Django / local files
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+
+# Env files / secrets
+.env
+.env.*
+
+# Byte-compiled / optimized / DLL files
+*.so
+
+# Distribution / packaging
+*.egg-info/
+dist/
+build/
+pip-wheel-metadata/
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# macOS / Windows
+.DS_Store
+Thumbs.db
+
+# Python testing
+.pytest_cache/
+
+# Note: Model files are needed for deployment
+# *.joblib
+# *.pkl
+
+# Logs
+*.log

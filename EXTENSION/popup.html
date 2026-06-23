@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zentrya</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <!-- Selection Screen -->
+  <div id="selectionScreen" class="container">
+    <div class="header">
+      <div class="header-left">
+        <img src="icons/icon48.png" alt="Zentrya" class="logo">
+        <div>
+          <h1>Zentrya</h1>
+          <p class="header-sub">Cybersecurity Toolkit</p>
+        </div>
+      </div>
+      <a id="openDashboard" href="#" class="dashboard-link" title="Open Dashboard">↗</a>
+    </div>
+
+    <!-- Auto-Protect Toggle -->
+    <div class="auto-protect-section">
+      <div class="toggle-container">
+        <div class="toggle-info">
+          <span class="toggle-label">🛡️ Auto-Protect</span>
+          <span class="toggle-desc">Scan all links on pages you visit</span>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="autoProtectToggle">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div id="autoProtectStatus" class="status-message hidden">
+        <span id="statusText"></span>
+      </div>
+    </div>
+
+    <!-- Detected Threats -->
+    <div id="threatsSection" class="threats-section hidden">
+      <div class="threats-header">
+        <h3>⚠️ Threats Found</h3>
+        <span id="threatCount" class="threat-count">0</span>
+      </div>
+      <div id="threatsList" class="threats-list">
+        <p class="no-threats">No threats detected</p>
+      </div>
+    </div>
+
+    <div class="button-grid">
+      <button id="selectUrlBtn" class="selection-btn">
+        <span class="icon">🔗</span>
+        <span class="btn-title">URL Scanner</span>
+        <span class="btn-desc">Scan suspicious links</span>
+      </button>
+      <button id="selectEmailBtn" class="selection-btn">
+        <span class="icon">📧</span>
+        <span class="btn-title">Email Scanner</span>
+        <span class="btn-desc">Check for spam</span>
+      </button>
+      <button id="selectMetadataBtn" class="selection-btn">
+        <span class="icon">🔍</span>
+        <span class="btn-title">Metadata</span>
+        <span class="btn-desc">Website intel</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- URL Scanner -->
+  <div id="urlScreen" class="container hidden">
+    <button id="backFromUrl" class="back-btn">← Back</button>
+    <h2>URL Scanner</h2>
+    <p class="subtitle">Check any link for phishing threats</p>
+    <div class="input-row">
+      <input type="text" id="urlInput" placeholder="Enter or paste URL..." autocomplete="off" />
+      <button id="scanCurrentPage" class="icon-btn" title="Scan current page">📍</button>
+    </div>
+    <button id="scanUrlBtn" class="action-btn">Scan URL</button>
+    <div id="urlResult" class="result hidden"></div>
+    <div id="urlLoader" class="loader hidden">
+      <div class="spinner"></div>
+      <span>Scanning...</span>
+    </div>
+  </div>
+
+  <!-- Email Scanner -->
+  <div id="emailScreen" class="container hidden">
+    <button id="backFromEmail" class="back-btn">← Back</button>
+    <h2>Email Scanner</h2>
+    <p class="subtitle">Paste email content to check for spam</p>
+    <textarea id="emailInput" placeholder="Paste email content here..." rows="6"></textarea>
+    <button id="scanEmailBtn" class="action-btn">Scan Email</button>
+    <div id="emailResult" class="result hidden"></div>
+    <div id="emailLoader" class="loader hidden">
+      <div class="spinner"></div>
+      <span>Scanning...</span>
+    </div>
+  </div>
+
+  <!-- Metadata Fetcher -->
+  <div id="metadataScreen" class="container hidden">
+    <button id="backFromMetadata" class="back-btn">← Back</button>
+    <h2>Metadata Fetcher</h2>
+    <p class="subtitle">Get security details for any website</p>
+    <div class="input-row">
+      <input type="text" id="metadataInput" placeholder="example.com" autocomplete="off" />
+      <button id="metaCurrentPage" class="icon-btn" title="Use current page">📍</button>
+    </div>
+    <button id="fetchMetadataBtn" class="action-btn">Fetch Metadata</button>
+    <div id="metadataResult" class="metadata-result hidden"></div>
+    <div id="metadataLoader" class="loader hidden">
+      <div class="spinner"></div>
+      <span>Fetching...</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

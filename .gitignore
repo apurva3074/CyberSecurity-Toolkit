@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+BACKEND/venv/
+venv/
+.env
+!.env.example
+
+# Django
+*.sqlite3
+BACKEND/src/db.sqlite3
+BACKEND/src/staticfiles/
+BACKEND/src/media/
+
+# Node
+FRONTEND/node_modules/
+FRONTEND/dist/
+
+# ML models (too large for git)
+BACKEND/ml_models/*.pkl
+BACKEND/ml_models/*.joblib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Secrets
+client_secret*.json
+.claude/
+devychigaand/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Extension build artifacts
+EXTENSION/*.crx
+EXTENSION/*.pem

@@ -1,0 +1,38 @@
+import { useState } from 'react';
+import UrlScanner from '../features/tools/UrlScanner';
+import urlscanimage from '../assets/urlscanimage.svg';
+
+export default function UrlSection({ urlInput, setUrlInput }) {
+    const [showScanner, setShowScanner] = useState(false);
+    return (
+        <section id="url-section" className="min-h-screen flex items-center justify-center bg-[#f7f7f7]">
+            <div className="w-full max-w-6xl mx-auto p-4 md:p-8 text-black flex flex-col items-center gap-8" style={{ minHeight: '500px' }}>
+                <div className="flex flex-col md:flex-row items-center gap-8 w-full">
+                    <div className="md:w-1/2 flex justify-center items-center">
+                        <img src={urlscanimage} alt="Phishing Link" className="w-full max-w-[20rem] md:max-w-[30rem] lg:max-w-[40rem] h-auto object-contain" />
+                    </div>
+                    <div className="md:w-1/2 flex flex-col items-center text-center">
+                        {!showScanner ? (
+                            <>
+                                <h2 className="text-4xl md:text-5xl font-semibold mb-4">Phishing Links</h2>
+                                <p className="mb-6 text-lg max-w-md font-normal text-center">
+                                    <span className="text-purple-700 font-semibold">Phishing Links</span> - is a Phishing method using malicious URL designed to trick you into revealing sensitive information or downloading malware.
+                                </p>
+                                <button
+                                    className="w-full max-w-xs py-3 px-6 rounded-xl bg-black text-white font-semibold text-lg transition hover:bg-gray-800 hover:shadow-lg"
+                                    onClick={() => setShowScanner(true)}
+                                >
+                                    Start Scanning
+                                </button>
+                            </>
+                        ) : (
+                            <div className="w-full bg-[#D9C5F53B] rounded-2xl p-6 md:p-8">
+                                <UrlScanner urlInput={urlInput} setUrlInput={setUrlInput} />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+}
