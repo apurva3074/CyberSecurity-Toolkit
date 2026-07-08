@@ -22,12 +22,37 @@ import TakedownSection from '../sections/TakedownSection';
 import Footer from '../components/Footer';
 
 export default function Dashboard() {
-    const [selectedTool, setSelectedTool] = useState(null);
-    const [currentTab, setCurrentTab] = useState('home');
+    const [selectedTool, setSelectedTool] = useState(() => {
+        try {
+            return sessionStorage.getItem('zentrya_selectedTool') || null;
+        } catch {
+            return null;
+        }
+    });
+    const [currentTab, setCurrentTab] = useState(() => {
+        try {
+            return sessionStorage.getItem('zentrya_currentTab') || 'home';
+        } catch {
+            return 'home';
+        }
+    });
     const [showProfile, setShowProfile] = useState(false);
     const [userEmail, setUserEmail] = useState('');
     const [userRole, setUserRole] = useState('user');
     const navigate = useNavigate();
+
+    // Persist the active tab/tool so a backgrounded-tab reload (e.g. mobile
+    // browsers discarding a suspended tab) restores where the user left off
+    // instead of dropping back to Home.
+    useEffect(() => {
+        try {
+            sessionStorage.setItem('zentrya_currentTab', currentTab);
+            if (selectedTool) sessionStorage.setItem('zentrya_selectedTool', selectedTool);
+            else sessionStorage.removeItem('zentrya_selectedTool');
+        } catch {
+            // ignore (e.g. storage disabled in private browsing)
+        }
+    }, [currentTab, selectedTool]);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
