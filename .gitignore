@@ -23,10 +23,6 @@ BACKEND/src/media/
 FRONTEND/node_modules/
 FRONTEND/dist/
 
-# ML models (too large for git)
-BACKEND/ml_models/*.pkl
-BACKEND/ml_models/*.joblib
-
 # IDE
 .vscode/
 .idea/
