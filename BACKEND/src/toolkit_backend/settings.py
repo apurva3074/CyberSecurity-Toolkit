@@ -164,13 +164,14 @@ DEFAULT_FROM_EMAIL = 'security@zentrya.com'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite local dev
     "http://localhost:3000",  # Alternative local port
-    "https://beproject-three.vercel.app",  # Production frontend
 ]
 
-# Allow Chrome extension to access API
+# Allow Chrome extension and all Vercel deployments of this frontend
+# (Vercel gives every preview/production deploy its own hashed subdomain)
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^chrome-extension://.*$",  # Allow all Chrome extensions
+    r"^chrome-extension://.*$",
+    r"^https://cyber-security-toolkit(-[\w]+)*\.vercel\.app$",
 ]
 
 # Allow credentials (cookies, authorization headers)
