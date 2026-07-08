@@ -6,6 +6,7 @@ export default function useAuth() {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const resolving = useRef(false);
+  const initialized = useRef(false);
 
   const fetchRole = async (userId) => {
     const { data, error } = await supabase
@@ -20,7 +21,11 @@ export default function useAuth() {
   const resolveUser = async (session) => {
     if (resolving.current) return;
     resolving.current = true;
-    setLoading(true);
+    // Supabase re-validates the session (and fires onAuthStateChange) whenever
+    // the tab regains focus, e.g. after switching tabs. Only show the
+    // full-screen loading state on the very first resolution — otherwise the
+    // whole app remounts on every tab-focus and the user loses their place.
+    if (!initialized.current) setLoading(true);
 
     const currentUser = session?.user ?? null;
 
@@ -34,6 +39,7 @@ export default function useAuth() {
     }
 
     setLoading(false);
+    initialized.current = true;
     resolving.current = false;
   };
 

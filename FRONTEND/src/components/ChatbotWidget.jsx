@@ -143,30 +143,40 @@ export default function ChatbotWidget() {
     if (inputRef.current) inputRef.current.style.height = "auto";
     setLoading(true);
 
-    try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMsg }),
-      });
-      const data = await res.json();
-      if (data.response) {
-        pushBotMessage({ text: data.response });
-      } else {
+    // The backend runs on a free tier that spins down when idle, so the first
+    // request after a while can fail while it wakes up. Retry a couple times
+    // with a short delay before giving up.
+    const attempts = 3;
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userMsg }),
+        });
+        const data = await res.json();
+        if (data.response) {
+          pushBotMessage({ text: data.response });
+        } else {
+          const localReply = getLocalReply(userMsg);
+          pushBotMessage({
+            text: localReply || data.error || "Sorry, I couldn't process that. Please try again.",
+          });
+        }
+        break;
+      } catch {
+        if (attempt < attempts) {
+          await new Promise((resolve) => setTimeout(resolve, 4000));
+          continue;
+        }
         const localReply = getLocalReply(userMsg);
         pushBotMessage({
-          text: localReply || data.error || "Sorry, I couldn't process that. Please try again.",
+          text: localReply || "I'm having trouble connecting right now. You can ask about our tools: URL Scanner, Email Scanner, Metadata Fetching, or Takedown.",
+          error: !localReply,
         });
       }
-    } catch {
-      const localReply = getLocalReply(userMsg);
-      pushBotMessage({
-        text: localReply || "I'm having trouble connecting right now. You can ask about our tools: URL Scanner, Email Scanner, Metadata Fetching, or Takedown.",
-        error: !localReply,
-      });
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleSend = (e) => {
