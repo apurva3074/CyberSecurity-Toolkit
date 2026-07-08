@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 
-import { HiOutlineMail, HiOutlineLink, HiOutlineShieldCheck, HiOutlineExclamationCircle, HiOutlineUser, HiOutlineQuestionMarkCircle, HiOutlineLogout, HiOutlineX } from 'react-icons/hi';
+import { HiOutlineMail, HiOutlineLink, HiOutlineShieldCheck, HiOutlineExclamationCircle, HiOutlineUser, HiOutlineQuestionMarkCircle, HiOutlineLogout, HiOutlineX, HiOutlineMenu, HiOutlineHome, HiOutlineLightBulb, HiOutlineNewspaper, HiOutlineBookOpen, HiOutlineUserGroup } from 'react-icons/hi';
 import UrlScanner, { toolInfo as urlInfo } from '../features/tools/UrlScanner';
 import EmailScanner, { toolInfo as emailInfo } from '../features/tools/EmailScanner';
 import MetadataFetcher, { toolInfo as metadataInfo } from '../features/tools/MetadataFetcher';
@@ -68,6 +68,7 @@ export default function Dashboard() {
     // Profile menu state & outside-click handler
     const [profileOpen, setProfileOpen] = useState(false);
     const profileRef = useRef(null);
+    const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
     useEffect(() => {
         function handleClickOutside(e) {
@@ -78,6 +79,11 @@ export default function Dashboard() {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
+
+    // Close the mobile nav automatically whenever the tab changes
+    useEffect(() => {
+        setMobileNavOpen(false);
+    }, [currentTab]);
 
     // Tool definitions (text lives with each component via toolInfo)
     const tools = [
@@ -107,15 +113,18 @@ export default function Dashboard() {
             {/* Floating purple orb */}
             <div className={`floating-orb ${currentTab === 'home' ? 'floating-orb-home' : ''}`} />
             {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-[9999] shadow flex flex-col sm:flex-row items-center justify-between sm:px-6 md:px-8" style={{ background: 'linear-gradient(to right, #1a0530 0%, #000000 18%)' }}>
-                <div className="flex items-center gap-2 sm:mb-0">
-                    <img src={Zentrya} alt="Logo" className="h-20 w-20 cursor-pointer" onClick={() => setCurrentTab('home')} />
+            <header className="fixed top-0 left-0 right-0 z-[9999] shadow flex items-center justify-between px-4 sm:px-6 md:px-8 h-16 md:h-20" style={{ background: 'linear-gradient(to right, #1a0530 0%, #000000 18%)' }}>
+                <div className="flex items-center gap-2 cursor-pointer" onClick={() => setCurrentTab('home')}>
+                    <img src={Zentrya} alt="Logo" className="h-12 w-12 md:h-20 md:w-20" />
+                    <span className="text-white font-bold text-lg md:text-xl tracking-wide">Zentrya</span>
                 </div>
-                <nav className="flex flex-col sm:flex-row gap-6 sm:gap-8">
+
+                {/* Desktop nav */}
+                <nav className="hidden md:flex gap-8">
                     <button
                         onClick={() => { setCurrentTab('home'); setSelectedTool(null); scrollToSection('home-section'); }}
                         aria-current={currentTab === 'home' ? 'page' : undefined}
-                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm sm:text-base transition-colors ${currentTab === 'home' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'home' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
                     >
                         Home
                     </button>
@@ -123,84 +132,156 @@ export default function Dashboard() {
                     <button
                         onClick={() => { setCurrentTab('solutions'); scrollToSection('solutions-section'); }}
                         aria-current={currentTab === 'solutions' ? 'page' : undefined}
-                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm sm:text-base transition-colors ${currentTab === 'solutions' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'solutions' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
                     >
                         Solutions
                     </button>
                     <button
                         onClick={() => { setCurrentTab('blog'); scrollToSection('blog-section'); }}
                         aria-current={currentTab === 'blog' ? 'page' : undefined}
-                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm sm:text-base transition-colors ${currentTab === 'blog' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'blog' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
                     >
                         Blog
                     </button>
                     <button
                         onClick={() => { setCurrentTab('glossary'); scrollToSection('glossary-section'); }}
                         aria-current={currentTab === 'glossary' ? 'page' : undefined}
-                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm sm:text-base transition-colors ${currentTab === 'glossary' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'glossary' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
                     >
                         Glossary
                     </button>
                     <button
                         onClick={() => { setCurrentTab('community'); scrollToSection('community-section'); }}
                         aria-current={currentTab === 'community' ? 'page' : undefined}
-                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm sm:text-base transition-colors ${currentTab === 'community' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'community' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
                     >
                         Community
                     </button>
                 </nav>
-                <div className="flex gap-2 mt-4 sm:mt-0 items-center" ref={profileRef}>
-                    {/* Profile avatar button */}
+
+                <div className="flex gap-1 sm:gap-2 items-center">
+                    {/* Hamburger button (mobile only) */}
                     <button
-                        className="flex items-center gap-2 px-3 py-1 rounded-full bg-transparent border border-transparent hover:bg-white/5"
-                        onClick={() => setProfileOpen(p => !p)}
+                        className="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition"
+                        onClick={() => setMobileNavOpen(o => !o)}
                         aria-haspopup="true"
-                        aria-expanded={profileOpen}
+                        aria-expanded={mobileNavOpen}
+                        aria-label={mobileNavOpen ? 'Close menu' : 'Open menu'}
                     >
-                        <div className="h-9 w-9 rounded-full bg-purple-600 flex items-center justify-center text-white">
-                            <HiOutlineUser />
-                        </div>
+                        {mobileNavOpen ? <HiOutlineX className="w-6 h-6" /> : <HiOutlineMenu className="w-6 h-6" />}
                     </button>
 
-                    {/* Dropdown menu */}
-                    {profileOpen && (
-                        <div className="absolute right-6 top-20 bg-[#1a1a2e] border border-white/10 rounded-xl shadow-2xl w-48 text-sm z-[9999] overflow-hidden">
-                            <div className="px-4 py-3 border-b border-white/10">
-                                <p className="text-white text-sm font-medium truncate">{userEmail || 'User'}</p>
-                                <p className="text-gray-500 text-xs mt-0.5">Zentrya Account</p>
+                    <div className="relative hidden md:block" ref={profileRef}>
+                        {/* Profile avatar button (desktop only — folded into the mobile menu below) */}
+                        <button
+                            className="flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full bg-transparent border border-transparent hover:bg-white/5"
+                            onClick={() => setProfileOpen(p => !p)}
+                            aria-haspopup="true"
+                            aria-expanded={profileOpen}
+                        >
+                            <div className="h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-purple-600 flex items-center justify-center text-white">
+                                <HiOutlineUser />
                             </div>
-                            <ul className="flex flex-col py-1">
-                                <li>
-                                    <button
-                                        className="w-full text-left px-4 py-2.5 hover:bg-white/5 text-gray-200 flex items-center gap-2 transition"
-                                        onClick={() => { setProfileOpen(false); setShowProfile(true); }}
-                                    >
-                                        <HiOutlineUser className="w-4 h-4" />
-                                        <span>Profile</span>
-                                    </button>
-                                </li>
-                                <li>
-                                    <button
-                                        className="w-full text-left px-4 py-2.5 hover:bg-white/5 text-gray-200 flex items-center gap-2 transition"
-                                        onClick={() => { setProfileOpen(false); setCurrentTab('solutions'); scrollToSection('solutions-section'); }}
-                                    >
-                                        <HiOutlineQuestionMarkCircle className="w-4 h-4" />
-                                        <span>Help & Guides</span>
-                                    </button>
-                                </li>
-                                <li className="border-t border-white/10">
-                                    <button
-                                        className="w-full text-left px-4 py-2.5 hover:bg-red-500/10 text-red-400 flex items-center gap-2 transition"
-                                        onClick={async () => { setProfileOpen(false); await handleLogout(); }}
-                                    >
-                                        <HiOutlineLogout className="w-4 h-4" />
-                                        <span>Logout</span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    )}
+                        </button>
+
+                        {/* Dropdown menu */}
+                        {profileOpen && (
+                            <div className="absolute right-0 top-12 bg-[#1a1a2e] border border-white/10 rounded-xl shadow-2xl w-48 text-sm z-[9999] overflow-hidden">
+                                <div className="px-4 py-3 border-b border-white/10">
+                                    <p className="text-white text-sm font-medium truncate">{userEmail || 'User'}</p>
+                                    <p className="text-gray-500 text-xs mt-0.5">Zentrya Account</p>
+                                </div>
+                                <ul className="flex flex-col py-1">
+                                    <li>
+                                        <button
+                                            className="w-full text-left px-4 py-2.5 hover:bg-white/5 text-gray-200 flex items-center gap-2 transition"
+                                            onClick={() => { setProfileOpen(false); setShowProfile(true); }}
+                                        >
+                                            <HiOutlineUser className="w-4 h-4" />
+                                            <span>Profile</span>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            className="w-full text-left px-4 py-2.5 hover:bg-white/5 text-gray-200 flex items-center gap-2 transition"
+                                            onClick={() => { setProfileOpen(false); setCurrentTab('solutions'); scrollToSection('solutions-section'); }}
+                                        >
+                                            <HiOutlineQuestionMarkCircle className="w-4 h-4" />
+                                            <span>Help & Guides</span>
+                                        </button>
+                                    </li>
+                                    <li className="border-t border-white/10">
+                                        <button
+                                            className="w-full text-left px-4 py-2.5 hover:bg-red-500/10 text-red-400 flex items-center gap-2 transition"
+                                            onClick={async () => { setProfileOpen(false); await handleLogout(); }}
+                                        >
+                                            <HiOutlineLogout className="w-4 h-4" />
+                                            <span>Logout</span>
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+                    </div>
                 </div>
+
+                {/* Mobile nav panel */}
+                {mobileNavOpen && (
+                    <div className="md:hidden fixed top-16 left-0 right-0 bg-[#0a0512] border-t border-white/10 shadow-2xl z-[9998] flex flex-col p-2">
+                        <button
+                            onClick={() => { setCurrentTab('home'); setSelectedTool(null); scrollToSection('home-section'); }}
+                            aria-current={currentTab === 'home' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'home' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineHome className="w-5 h-5 flex-shrink-0" />
+                            Home
+                        </button>
+                        <button
+                            onClick={() => { setCurrentTab('solutions'); scrollToSection('solutions-section'); }}
+                            aria-current={currentTab === 'solutions' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'solutions' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineLightBulb className="w-5 h-5 flex-shrink-0" />
+                            Solutions
+                        </button>
+                        <button
+                            onClick={() => { setCurrentTab('blog'); scrollToSection('blog-section'); }}
+                            aria-current={currentTab === 'blog' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'blog' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineNewspaper className="w-5 h-5 flex-shrink-0" />
+                            Blog
+                        </button>
+                        <button
+                            onClick={() => { setCurrentTab('glossary'); scrollToSection('glossary-section'); }}
+                            aria-current={currentTab === 'glossary' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'glossary' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineBookOpen className="w-5 h-5 flex-shrink-0" />
+                            Glossary
+                        </button>
+                        <button
+                            onClick={() => { setCurrentTab('community'); scrollToSection('community-section'); }}
+                            aria-current={currentTab === 'community' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'community' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineUserGroup className="w-5 h-5 flex-shrink-0" />
+                            Community
+                        </button>
+
+                        <div className="my-1 border-t border-white/10" />
+
+                        <button
+                            onClick={() => { setMobileNavOpen(false); setShowProfile(true); }}
+                            className="flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-white"
+                        >
+                            <span className="h-5 w-5 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0">
+                                <HiOutlineUser className="w-3.5 h-3.5" />
+                            </span>
+                            Profile
+                        </button>
+                    </div>
+                )}
             </header>
 
             {/* Profile Modal */}
@@ -254,7 +335,7 @@ export default function Dashboard() {
             )}
 
             {/* Main Content */}
-            <main className="pt-28 relative z-[2]">
+            <main className="pt-20 md:pt-28 relative z-[2]">
                 {/* Home tab: only stack the four product sections, each full-screen */}
                 {currentTab === 'home' ? (
                     <div>

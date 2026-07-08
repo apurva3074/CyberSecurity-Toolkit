@@ -133,14 +133,14 @@ function RequestDetail({ request, onBack, onRefresh }) {
             <h2 className="text-2xl font-bold text-white">Request #{request.id}</h2>
             <p className="text-gray-500 text-sm mt-1">Submitted {new Date(request.created_at).toLocaleString()}</p>
           </div>
-          <div className="flex gap-3">
-            <div className="bg-white/5 rounded-xl px-4 py-2 text-center">
+          <div className="flex flex-wrap gap-3">
+            <div className="bg-white/5 rounded-xl px-4 py-2 text-center min-w-0">
               <p className="text-gray-500 text-[10px] font-medium">Provider</p>
-              <p className="text-white text-sm font-semibold">{request.hosting_provider || "Unknown"}</p>
+              <p className="text-white text-sm font-semibold truncate">{request.hosting_provider || "Unknown"}</p>
             </div>
-            <div className="bg-white/5 rounded-xl px-4 py-2 text-center">
+            <div className="bg-white/5 rounded-xl px-4 py-2 text-center min-w-0">
               <p className="text-gray-500 text-[10px] font-medium">Abuse Email</p>
-              <p className="text-purple-300 text-sm font-semibold">{request.abuse_email || "N/A"}</p>
+              <p className="text-purple-300 text-sm font-semibold truncate">{request.abuse_email || "N/A"}</p>
             </div>
           </div>
         </div>

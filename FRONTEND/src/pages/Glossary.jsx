@@ -567,7 +567,7 @@ export default function Glossary() {
         </div>
 
         {/* Category filters */}
-        <div className="flex gap-2 flex-wrap mb-8">
+        <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar md:flex-wrap md:overflow-visible mb-8 -mx-6 px-6 md:mx-0 md:px-0">
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             const active = category === cat.id;
@@ -575,7 +575,7 @@ export default function Glossary() {
               <button
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
-                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition ${
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition flex-shrink-0 ${
                   active
                     ? 'bg-purple-600 text-white'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'

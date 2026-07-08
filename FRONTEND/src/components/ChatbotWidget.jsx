@@ -195,24 +195,24 @@ export default function ChatbotWidget() {
   const showQuickActions = messages.length <= 1 && !loading;
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
       {/* Chat Window */}
       <div
-        className={`absolute bottom-24 right-0 w-[calc(100vw-3rem)] sm:w-[440px] transition-all duration-300 ease-out origin-bottom-right ${
+        className={`absolute bottom-20 sm:bottom-24 right-0 w-[calc(100vw-2rem)] sm:w-[440px] transition-all duration-300 ease-out origin-bottom-right ${
           open
             ? "scale-100 opacity-100 pointer-events-auto"
             : "scale-95 opacity-0 pointer-events-none"
         }`}
       >
-        <div className="pt-4 bg-[#111119] rounded-2xl shadow-2xl shadow-purple-950/40 border border-white/10 flex flex-col h-[calc(100vh-10rem)] sm:h-[600px] overflow-hidden">
+        <div className="pt-4 bg-[#111119] rounded-2xl shadow-2xl shadow-purple-950/40 border border-white/10 flex flex-col h-[min(70vh,600px)] overflow-hidden">
           {/* Header */}
-          <div className=" bg-gradient-to-r from-purple-700 to-indigo-600 px-5 py-5 flex items-center gap-4">
+          <div className=" bg-gradient-to-r from-purple-700 to-indigo-600 px-4 py-4 sm:px-5 sm:py-5 flex items-center gap-3 sm:gap-4">
             <div className="relative flex-shrink-0">
-              <img src={chatbotIcon} alt="SecBot" className="w-12 h-12 rounded-full object-cover" />
+              <img src={chatbotIcon} alt="SecBot" className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover" />
               <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-400 border-2 border-purple-700" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-white font-semibold text-lg leading-tight">
+              <h3 className="text-white font-semibold text-base sm:text-lg leading-tight">
                 SecBot
               </h3>
               <p className="text-purple-200 text-sm flex items-center gap-1.5">
@@ -316,7 +316,7 @@ export default function ChatbotWidget() {
       {/* Floating Toggle Button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className={`relative w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-white text-2xl transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+        className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-lg flex items-center justify-center text-white text-2xl transition-all duration-300 hover:scale-110 hover:shadow-xl ${
           open
             ? "bg-gradient-to-r from-gray-600 to-gray-700"
             : "bg-gradient-to-r from-purple-600 to-indigo-600"
@@ -327,9 +327,9 @@ export default function ChatbotWidget() {
           <span className="absolute inset-0 rounded-full bg-purple-600 animate-ping opacity-20" />
         )}
         {open ? (
-          <HiOutlineX className="w-7 h-7" />
+          <HiOutlineX className="w-6 h-6 sm:w-7 sm:h-7" />
         ) : (
-          <img src={chatbotIcon} alt="Chat" className="w-11 h-11 rounded-full object-cover bg-white" />
+          <img src={chatbotIcon} alt="Chat" className="w-9 h-9 sm:w-11 sm:h-11 rounded-full object-cover bg-white" />
         )}
         {!open && unread > 0 && (
           <span className="absolute -top-1 -right-1 min-w-[22px] h-[22px] px-1 rounded-full bg-red-500 border-2 border-[#0a0a0f] text-white text-[11px] font-bold flex items-center justify-center">

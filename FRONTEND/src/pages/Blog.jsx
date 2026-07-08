@@ -115,10 +115,10 @@ export default function Blog() {
             </div>
 
             {/* Tag filter bar */}
-            <div className="flex gap-2 flex-wrap mb-10">
+            <div className="flex gap-2 overflow-x-auto flex-nowrap no-scrollbar md:flex-wrap md:overflow-visible mb-10 -mx-6 px-6 md:mx-0 md:px-0">
                 <button
                     onClick={() => setActiveTag('all')}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition ${activeTag === 'all' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition flex-shrink-0 ${activeTag === 'all' ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
                 >
                     All
                 </button>
@@ -126,7 +126,7 @@ export default function Blog() {
                     <button
                         key={tag}
                         onClick={() => setActiveTag(tag)}
-                        className={`px-4 py-2 rounded-full text-sm font-medium transition capitalize ${activeTag === tag ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition capitalize flex-shrink-0 ${activeTag === tag ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
                     >
                         {tag}
                     </button>
@@ -156,8 +156,8 @@ export default function Blog() {
                                 {featured.title}
                             </h3>
                             <p className="text-gray-400 text-base mb-6 max-w-2xl leading-relaxed">{featured.excerpt}</p>
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4 text-sm text-gray-500">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-500">
                                     <span className="flex items-center gap-1.5">
                                         <HiOutlineUser className="w-4 h-4" />
                                         {featured.author}

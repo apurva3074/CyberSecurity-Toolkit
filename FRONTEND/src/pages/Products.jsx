@@ -9,7 +9,7 @@ export default function Products({ tools, onSelect, selectedTool, onBack, urlInp
 
     if (!selectedTool) {
         return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto py-12 relative z-50">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto py-12 px-4 relative z-50">
                 {tools.map(tool => (
                     <div
                         key={tool.id}

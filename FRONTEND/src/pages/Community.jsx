@@ -176,7 +176,7 @@ export default function Community() {
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-white">{questions.length}</p>
           <p className="text-gray-500 text-xs mt-1">Questions</p>
@@ -247,7 +247,7 @@ export default function Community() {
             className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {[
             { id: 'all', label: 'All' },
             { id: 'unanswered', label: 'Needs Help' },
@@ -309,7 +309,7 @@ export default function Community() {
                     {q.body && (
                       <p className="text-gray-500 text-sm mt-1 line-clamp-1">{q.body}</p>
                     )}
-                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <HiOutlineUser className="w-3 h-3" />
                         {q.author_username || 'guest'}

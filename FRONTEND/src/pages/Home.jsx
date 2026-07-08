@@ -138,8 +138,8 @@ export default function Home({ onBrowse, onSolutions }) {
                     </div>
                 </div>
 
-                {/* Right: video */}
-                <div className="w-full flex justify-center lg:justify-end z-10">
+                {/* Right: video (hidden on mobile) */}
+                <div className="hidden md:flex w-full justify-center lg:justify-end z-10">
                     <div className="w-full max-w-sm md:max-w-md lg:max-w-xl rounded-2xl overflow-hidden relative">
                         <div className="absolute inset-0 rounded-2xl  pointer-events-none z-10" />
 

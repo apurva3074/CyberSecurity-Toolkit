@@ -23,9 +23,9 @@ export default function MetadataSection({ typoDomain, setTypoDomain }) {
         <section id="metadata-section" className="min-h-screen flex items-center justify-center py-6">
             <div className="w-full max-w-6xl mx-auto px-6 md:px-10 text-black">
                 <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 w-full">
-                    <div className="md:w-1/2 flex flex-col items-center justify-center">
+                    <div className={`md:w-1/2 flex-col items-center justify-center ${showScanner ? 'hidden md:flex' : 'flex'}`}>
                         <img src={metadataimage} alt="Metadata" className="w-[18rem] md:w-[24rem] lg:w-[28rem] h-[18rem] md:h-[24rem] lg:h-[28rem] object-contain" />
-                        <div className="flex items-center gap-2 bg-black/5 rounded-full px-5 py-2 mt-5">
+                        <div className="hidden md:flex items-center gap-2 bg-black/5 rounded-full px-5 py-2 mt-5">
                             <HiOutlineShieldCheck className="w-4 h-4 text-green-600" />
                             <span className="text-sm font-medium text-gray-600">Comprehensive website intelligence</span>
                         </div>
@@ -51,7 +51,7 @@ export default function MetadataSection({ typoDomain, setTypoDomain }) {
                                     Start Fetching
                                 </button>
 
-                                <div className="grid grid-cols-2 gap-3 w-full max-w-md">
+                                <div className="hidden md:grid grid-cols-2 gap-3 w-full max-w-md">
                                     {features.map((f) => {
                                         const Icon = f.icon;
                                         return (

@@ -52,7 +52,7 @@ export function ManualEmailScanner() {
 
     return (
         <>
-            <h2 className="text-white text-2xl font-semibold mb-1">Paste Email Content</h2>
+            <h2 className="text-white text-4xl font-semibold mb-1">Paste Email Content</h2>
             <p className="text-purple-400 text-xs font-semibold mb-3">Enter the email body text to check for spam or phishing</p>
             <textarea
                 value={emailText}

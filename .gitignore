@@ -11,6 +11,8 @@ build/
 BACKEND/venv/
 venv/
 .env
+.env.local
+.env.*.local
 !.env.example
 
 # Django
@@ -30,8 +32,11 @@ FRONTEND/dist/
 *.swo
 *~
 
-# Secrets
+# Secrets / credentials
 client_secret*.json
+*.pem
+*.key
+*.p12
 .claude/
 devychigaand/
 

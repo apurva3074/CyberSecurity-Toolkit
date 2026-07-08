@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Fluid root font-size: Tailwind's text/padding/width utilities are rem-based,
+   so scaling the root down on narrow viewports shrinks all of them proportionally
+   instead of jumping at breakpoints. Flat 16px (Tailwind's default) from 1024px up,
+   so desktop layouts are pixel-identical to before this was added. */
+html {
+  font-size: clamp(14px, 13.1px + 0.28vw, 16px);
+}
+
 @keyframes floatOrb {
   0%   { transform: translate(0, 0) scale(1); }
   15%  { transform: translate(30vw, 10vh) scale(1.1); }

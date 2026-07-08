@@ -180,7 +180,7 @@ const guides = [
 
 function StepCard({ step, index }) {
   return (
-    <div className="flex gap-5 items-start">
+    <div className="flex gap-3 sm:gap-5 items-start">
       {/* Step number */}
       <div className="flex-shrink-0 w-10 h-10 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold text-sm">
         {index + 1}
@@ -238,15 +238,15 @@ function GuideSection({ guide }) {
       {/* Header — always visible */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center gap-5 p-6 text-left hover:bg-white/5 transition"
+        className="w-full flex items-center gap-3 sm:gap-5 p-4 sm:p-6 text-left hover:bg-white/5 transition"
       >
-        <img src={guide.image} alt={guide.title} className="w-16 h-16 object-contain flex-shrink-0" />
-        <div className="flex-1">
+        <img src={guide.image} alt={guide.title} className="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" />
+        <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
-            <Icon className={`w-5 h-5 ${guide.accentText}`} />
-            <h3 className="text-white font-bold text-xl">{guide.title}</h3>
+            <Icon className={`w-5 h-5 ${guide.accentText} flex-shrink-0`} />
+            <h3 className="text-white font-bold text-base sm:text-xl truncate">{guide.title}</h3>
           </div>
-          <p className="text-gray-400 text-sm">{guide.subtitle}</p>
+          <p className="text-gray-400 text-xs sm:text-sm">{guide.subtitle}</p>
           <p className="text-gray-500 text-xs mt-1">{guide.steps.length} steps</p>
         </div>
         {expanded ? (
@@ -258,7 +258,7 @@ function GuideSection({ guide }) {
 
       {/* Steps — expandable */}
       {expanded && (
-        <div className="px-6 pb-6 space-y-8 border-t border-white/5 pt-6">
+        <div className="px-4 sm:px-6 pb-6 space-y-8 border-t border-white/5 pt-6">
           {guide.steps.map((step, i) => (
             <StepCard key={i} step={step} index={i} />
           ))}

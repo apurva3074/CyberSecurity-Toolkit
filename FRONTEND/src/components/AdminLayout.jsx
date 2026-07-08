@@ -21,8 +21,14 @@ const navItems = [
 
 export default function AdminLayout({ currentPage, onNavigate, children, pendingCount = 0 }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [adminEmail, setAdminEmail] = useState('');
   const navigate = useNavigate();
+
+  // Close the mobile drawer whenever a nav item is chosen
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [currentPage]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -39,11 +45,19 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
 
   return (
     <div className="min-h-screen bg-[#0a0a0f] flex">
+      {/* Mobile backdrop */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 z-40 md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-[#111119] border-r border-white/5 flex flex-col z-40 transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-[72px]'
-        }`}
+        className={`fixed top-0 left-0 h-full bg-[#111119] border-r border-white/5 flex flex-col z-50 duration-300 w-64 transition-transform md:transition-[width] ${
+          sidebarOpen ? 'md:w-64' : 'md:w-[72px]'
+        } ${mobileOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
       >
         {/* Logo */}
         <div className="flex items-center gap-3 px-5 py-5 border-b border-white/5">
@@ -129,7 +143,7 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
         <div className="px-3 py-4 border-t border-white/5 space-y-1">
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:bg-white/5 hover:text-white transition"
+            className="hidden md:flex w-full items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-gray-400 hover:bg-white/5 hover:text-white transition"
             title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
           >
             <HiOutlineMenuAlt2 className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${sidebarOpen ? '' : 'rotate-180'}`} />
@@ -147,16 +161,25 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
 
       {/* Main content */}
       <main
-        className={`flex-1 transition-all duration-300 ${
-          sidebarOpen ? 'ml-64' : 'ml-[72px]'
+        className={`flex-1 min-w-0 transition-all duration-300 ml-0 ${
+          sidebarOpen ? 'md:ml-64' : 'md:ml-[72px]'
         }`}
       >
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5 px-8 py-4 flex items-center justify-between">
-          <h2 className="text-white text-xl font-semibold capitalize">
-            {navItems.find((n) => n.id === currentPage)?.label || 'Overview'}
-          </h2>
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-30 bg-[#0a0a0f]/80 backdrop-blur-md border-b border-white/5 px-4 sm:px-6 md:px-8 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="md:hidden p-2 -ml-2 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white transition flex-shrink-0"
+              aria-label="Open menu"
+            >
+              <HiOutlineMenuAlt2 className="w-5 h-5" />
+            </button>
+            <h2 className="text-white text-lg sm:text-xl font-semibold capitalize truncate">
+              {navItems.find((n) => n.id === currentPage)?.label || 'Overview'}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3 flex-shrink-0">
             {adminEmail && (
               <span className="text-gray-400 text-sm hidden sm:block">{adminEmail}</span>
             )}
@@ -167,7 +190,7 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
         </header>
 
         {/* Page content */}
-        <div className="p-6 md:p-8 animate-fadeIn">{children}</div>
+        <div className="p-4 sm:p-6 md:p-8 animate-fadeIn">{children}</div>
       </main>
     </div>
   );

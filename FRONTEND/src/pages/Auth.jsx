@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import Logo from '../assets/Logo.svg';
 
@@ -8,6 +8,12 @@ export default function Auth() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [isLogin, setIsLogin] = useState(true);
+    const [mobileIntroDone, setMobileIntroDone] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => setMobileIntroDone(true), 2500);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,8 +75,25 @@ export default function Auth() {
                     zIndex: 0,
                 }}
             />
+            {/* Mobile intro loader: shown briefly before the login/signup form appears */}
+            {!mobileIntroDone && (
+                <div className="md:hidden fixed inset-0 z-20 flex flex-col items-center justify-center px-8 text-center" style={{ background: '#000' }}>
+                    <h1 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '2.2rem', fontWeight: 800, color: '#fff', lineHeight: 1.15 }}>
+                        <span style={{ display: 'block' }}>One</span>
+                        <span style={{ display: 'block' }}>Platform</span>
+                        <span style={{ display: 'block' }}>
+                            <span style={{ color: '#8AC0FF' }}>Total</span> Protection
+                        </span>
+                    </h1>
+                    <p style={{ color: '#fff', fontSize: '1rem', marginTop: '1rem', maxWidth: 320, opacity: 0.85, fontFamily: 'Poppins, sans-serif' }}>
+                        Security That Works—-So You Don’t Have to Worry.
+                    </p>
+                    <div className="w-10 h-10 border-[3px] border-white/20 border-t-white rounded-full animate-spin mt-8" />
+                </div>
+            )}
+
             {/* Main content: left text and right form */}
-            <div className="flex w-full max-w-5xl items-center justify-center relative z-10">
+            <div className={`w-full max-w-5xl items-center justify-center relative z-10 ${mobileIntroDone ? 'flex' : 'hidden md:flex'}`}>
                 {/* Left text */}
                 <div className="flex-1 hidden md:flex flex-col items-start pr-8">
                     <h1 style={{ fontFamily: 'Poppins, sans-serif', fontSize: '2.8rem', fontWeight: 800, color: '#fff', lineHeight: 1.1 }}>
@@ -142,7 +165,7 @@ export default function Auth() {
                                 />
                                 <button
                                     type="submit"
-                                    className="w-60 py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
+                                    className="w-full max-w-xs py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
                                     style={{ background: '#111344', color: '#fff', borderColor: '#442750' }}
                                     disabled={loading}
                                 >
@@ -175,7 +198,7 @@ export default function Auth() {
                                 />
                                 <button
                                     type="submit"
-                                    className="w-60 py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
+                                    className="w-full max-w-xs py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
                                     style={{ background: '#111344', color: '#fff', borderColor: '#442750' }}
                                     disabled={loading}
                                 >

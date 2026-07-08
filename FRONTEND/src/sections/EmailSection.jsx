@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { HiOutlineShieldCheck, HiOutlineMail, HiOutlineSearch, HiOutlineLockClosed, HiOutlineExclamation, HiOutlineClipboardList, HiOutlineInbox } from 'react-icons/hi';
 import { ManualEmailScanner, GmailScanner } from '../features/tools/EmailScanner';
-import emailscanimage from '../assets/emailscanimage.svg';
+import emailscanimage from '../assets/emailscanimage.jpeg';
 
 const features = [
     { icon: HiOutlineMail, title: 'Gmail Integration', desc: 'Connect Gmail to auto-scan inbox' },
@@ -31,6 +31,14 @@ export default function EmailSection() {
         <section id="email-section" className="min-h-screen flex items-center justify-center py-6">
             <div className="w-full max-w-6xl mx-auto px-6 md:px-10 text-white">
                 <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16 w-full">
+                    <div className={`md:w-1/2 flex-col items-center justify-center ${view !== 'overview' ? 'hidden md:flex' : 'flex'}`}>
+                        <img src={emailscanimage} alt="Email Scanning" className="w-[18rem] md:w-[24rem] lg:w-[28rem] h-[18rem] md:h-[24rem] lg:h-[28rem] object-cover rounded-[20%]" />
+                        <div className="hidden md:flex items-center gap-2 bg-white/5 rounded-full px-5 py-2 mt-5">
+                            <HiOutlineShieldCheck className="w-4 h-4 text-green-400" />
+                            <span className="text-sm font-medium text-gray-400">AI-powered spam & phishing detection</span>
+                        </div>
+                    </div>
+
                     <div className="md:w-1/2 flex flex-col items-center text-center">
                         {view === 'overview' ? (
                             <div className="flex flex-col items-center gap-5 w-full">
@@ -61,7 +69,7 @@ export default function EmailSection() {
                                     </button>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-3 w-full max-w-md">
+                                <div className="hidden md:grid grid-cols-2 gap-3 w-full max-w-md">
                                     {features.map((f) => {
                                         const Icon = f.icon;
                                         return (
@@ -131,14 +139,6 @@ export default function EmailSection() {
                                 </div>
                             </div>
                         )}
-                    </div>
-
-                    <div className="md:w-1/2 flex flex-col items-center justify-center">
-                        <img src={emailscanimage} alt="Email Scanning" className="w-[18rem] md:w-[24rem] lg:w-[28rem] h-[18rem] md:h-[24rem] lg:h-[28rem] object-contain" />
-                        <div className="flex items-center gap-2 bg-white/5 rounded-full px-5 py-2 mt-5">
-                            <HiOutlineShieldCheck className="w-4 h-4 text-green-400" />
-                            <span className="text-sm font-medium text-gray-400">AI-powered spam & phishing detection</span>
-                        </div>
                     </div>
                 </div>
             </div>
