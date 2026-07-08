@@ -108,7 +108,7 @@ export default function Auth() {
                     </p>
                 </div>
                 {/* Right form */}
-                <div className="bg-white rounded-2xl shadow-lg w-full max-w-md ml-0 md:ml-12 p-6 sm:p-8 border-2" style={{ borderColor: '#52154E', zIndex: 1, position: 'relative' }}>
+                <div className="bg-white rounded-2xl shadow-lg w-full max-w-xs sm:max-w-md ml-0 md:ml-12 p-6 sm:p-8 border-2" style={{ borderColor: '#52154E', zIndex: 1, position: 'relative' }}>
                     {/* Tab Switcher */}
                     <div className="relative flex h-12">
 
@@ -134,7 +134,7 @@ export default function Auth() {
                         </div>
                     )}
 
-                    <div className="overflow-hidden" style={{ height: 'auto', minHeight: 240 }}>
+                    <div className="overflow-hidden">
                         <div
                             className="flex transition-transform duration-500"
                             style={{ transform: isLogin ? 'translateX(0%)' : 'translateX(-50%)', width: '200%' }}
