@@ -111,16 +111,10 @@ export default function Auth() {
                 <div className="bg-white rounded-2xl shadow-lg w-full max-w-xs sm:max-w-md ml-0 md:ml-12 p-6 sm:p-8 border-2" style={{ borderColor: '#52154E', zIndex: 1, position: 'relative' }}>
                     {/* Tab Switcher */}
                     <div className="relative flex h-12">
-
-                        <style>{`@keyframes slow-spin { to { transform: rotate(360deg); } }`}</style>
                         <img
                             src={Logo}
                             alt="Logo"
                             className="h-15 w-15 absolute left-0 top-1/2 transform -translate-y-1/2"
-                            style={{
-                                animation: 'slow-spin 8s linear infinite',
-                                // fallback for Tailwind users: add 'animate-spin-slow' to your Tailwind config if desired
-                            }}
                         />
                     </div>
 
