@@ -26,6 +26,7 @@ export default function Dashboard() {
     const [currentTab, setCurrentTab] = useState('home');
     const [showProfile, setShowProfile] = useState(false);
     const [userEmail, setUserEmail] = useState('');
+    const [userRole, setUserRole] = useState('user');
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -35,8 +36,18 @@ export default function Dashboard() {
 
     // Fetch user email + handle OAuth redirect params
     useEffect(() => {
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
             setUserEmail(session?.user?.email || '');
+
+            if (session?.user?.id) {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (!error && data?.role) setUserRole(data.role);
+            }
         });
 
         const params = new URLSearchParams(window.location.search);
@@ -92,24 +103,11 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="min-h-screen w-full " style={{ background: '#000', position: 'relative' }}>
-            <div
-                style={{
-                    position: 'absolute',
-                    left: '-20%',
-                    top: '-20%',
-                    width: '55vw',
-                    height: '55vw',
-                    minWidth: '500px',
-                    minHeight: '500px',
-                    borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(155,89,182,0.32) 0%, rgba(68,39,80,0.18) 55%, rgba(0,0,0,0) 100%)',
-                    filter: 'blur(12px)',
-                    zIndex: 0,
-                }}
-            />
+        <div className="min-h-screen w-full" style={{ background: '#000', position: 'relative', overflow: 'hidden' }}>
+            {/* Floating purple orb */}
+            <div className={`floating-orb ${currentTab === 'home' ? 'floating-orb-home' : ''}`} />
             {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-[9999] shadow flex flex-col sm:flex-row items-center justify-between sm:px-6 md:px-8 bg-black/80 backdrop-blur-sm">
+            <header className="fixed top-0 left-0 right-0 z-[9999] shadow flex flex-col sm:flex-row items-center justify-between sm:px-6 md:px-8" style={{ background: 'linear-gradient(to right, #1a0530 0%, #000000 18%)' }}>
                 <div className="flex items-center gap-2 sm:mb-0">
                     <img src={Zentrya} alt="Logo" className="h-20 w-20 cursor-pointer" onClick={() => setCurrentTab('home')} />
                 </div>
@@ -237,7 +235,7 @@ export default function Dashboard() {
                             </div>
                             <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                                 <p className="text-gray-500 text-xs font-medium mb-1">Role</p>
-                                <p className="text-white text-sm">User</p>
+                                <p className="text-white text-sm capitalize">{userRole}</p>
                             </div>
                             <div className="bg-white/5 border border-white/10 rounded-xl p-4">
                                 <p className="text-gray-500 text-xs font-medium mb-1">Platform</p>
@@ -256,20 +254,20 @@ export default function Dashboard() {
             )}
 
             {/* Main Content */}
-            <main className="pt-28">
+            <main className="pt-28 relative z-[2]">
                 {/* Home tab: only stack the four product sections, each full-screen */}
                 {currentTab === 'home' ? (
                     <div>
 
                         <section id="home-section" className="min-h-screen flex items-center justify-center">
-                            <Home onBrowse={() => scrollToSection('url-section')} />
+                            <Home onBrowse={() => scrollToSection('url-section')} onSolutions={() => { setCurrentTab('solutions'); scrollToSection('solutions-section'); }} />
                         </section>
 
                         <section id="url-section" className="min-h-screen flex items-center justify-center bg-[#f7f7f7]">
                             <UrlSection urlInput={urlInput} setUrlInput={setUrlInput} />
                         </section>
 
-                        <section id="email-section" className="min-h-screen flex items-center justify-center bg-[#020106]">
+                        <section id="email-section" className="min-h-screen flex items-center justify-center">
                             <EmailSection setEmailFile={setEmailFile} />
                         </section>
 
@@ -277,7 +275,7 @@ export default function Dashboard() {
                             <MetadataSection typoDomain={typoDomain} setTypoDomain={setTypoDomain} />
                         </section>
 
-                        <section id="takedown-section" className="min-h-screen flex items-center justify-center bg-[#020106]">
+                        <section id="takedown-section" className="min-h-screen flex items-center justify-center">
                             <TakedownSection
                                 takedownDomain={takedownDomain}
                                 setTakedownDomain={setTakedownDomain}

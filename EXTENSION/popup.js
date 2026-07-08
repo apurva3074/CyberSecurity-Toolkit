@@ -138,8 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
   urlInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUrlScan(); });
 
   async function handleUrlScan() {
-    const url = urlInput.value.trim();
+    let url = urlInput.value.trim();
     if (!url) { showResult(urlResult, 'Please enter a URL', 'error'); return; }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+      urlInput.value = url;
+    }
 
     urlLoader.classList.remove('hidden');
     urlResult.classList.add('hidden');
@@ -153,10 +157,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
       if (res.ok) {
-        showResult(urlResult, data.phishing
-          ? '⚠️ Phishing detected! This URL is dangerous.'
-          : '✅ URL is safe. No phishing detected.',
-          data.phishing ? 'danger' : 'safe');
+        if (data.url_exists === false) {
+          showResult(urlResult, '❌ ' + (data.warning || 'This website does not exist or is unreachable.'), 'error');
+        } else {
+          showResult(urlResult, data.phishing
+            ? '⚠️ Phishing detected! This URL is dangerous.'
+            : '✅ URL is safe. No phishing detected.',
+            data.phishing ? 'danger' : 'safe');
+        }
       } else {
         showResult(urlResult, data.error || 'Scan failed', 'error');
       }
@@ -215,8 +223,12 @@ document.addEventListener('DOMContentLoaded', () => {
   metadataInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleMetadataFetch(); });
 
   async function handleMetadataFetch() {
-    const domain = metadataInput.value.trim();
+    let domain = metadataInput.value.trim();
     if (!domain) { showMetadataError('Please enter a domain'); return; }
+    if (!domain.startsWith('http://') && !domain.startsWith('https://')) {
+      domain = 'https://' + domain;
+      metadataInput.value = domain;
+    }
 
     metadataLoader.classList.remove('hidden');
     metadataResult.classList.add('hidden');

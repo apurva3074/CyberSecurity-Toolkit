@@ -3,12 +3,24 @@ import {
   HiOutlineMail,
   HiOutlineLink,
   HiOutlineExclamation,
+  HiOutlineShieldCheck,
+  HiOutlineLightningBolt,
+  HiOutlineLockClosed,
+  HiOutlineGlobe,
+  HiOutlineChevronDown,
 } from 'react-icons/hi';
 
 import { API_BASE_URL } from '../config';
 const SCAN_STATS_URL = `${API_BASE_URL}/api/scans/stats/`;
 
-export default function Home({ onBrowse }) {
+const features = [
+    { icon: HiOutlineLightningBolt, label: 'Real-time Scanning', color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/20' },
+    { icon: HiOutlineShieldCheck, label: 'AI-Powered Detection', color: 'text-purple-400', bg: 'bg-purple-500/10', border: 'border-purple-500/20' },
+    { icon: HiOutlineLockClosed, label: 'Privacy First', color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/20' },
+    { icon: HiOutlineGlobe, label: 'Instant Takedowns', color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/20' },
+];
+
+export default function Home({ onBrowse, onSolutions }) {
     const [videoError, setVideoError] = useState(false);
     const [stats, setStats] = useState(null);
     const [statsLoading, setStatsLoading] = useState(true);
@@ -65,37 +77,71 @@ export default function Home({ onBrowse }) {
     ];
 
     return (
-        <div className="max-w-7xl mx-auto py-8 md:py-10 lg:py-16 px-6 text-white">
+        <div className="max-w-7xl mx-auto py-8 md:py-10 lg:py-16 px-6 text-white relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
 
                 {/* Left: text */}
                 <div className="text-left z-10">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                        <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        <span className="text-sm text-purple-300 font-medium">Live Protection Active</span>
+                    </div>
+
                     <h1 className="font-extrabold mb-4 leading-tight
                         text-[clamp(1.75rem,2.5vw,3.5rem)]
                         md:text-[clamp(1.9rem,2vw,4rem)]
                         lg:text-[clamp(2.25rem,1.8vw,6rem)]"
                     >
-                        Protecting your inbox and links from scams
+                        Protecting your inbox{' '}
+                        <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
+                            and links
+                        </span>{' '}
+                        from scams
                     </h1>
 
-                    <p className="text-gray-200 mb-6
+                    <p className="text-gray-400 mb-8 leading-relaxed max-w-lg
                         text-[clamp(1rem,1.2vw,1.4rem)]
                         md:text-[clamp(1.05rem,1vw,1.3rem)]"
                     >
                         Our toolkit provides quick, accurate scanning for emails and URLs, automated metadata checks, and easy takedown requests — all in one private, secure dashboard.
                     </p>
 
-                    <button
-                        onClick={onBrowse}
-                        className="px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-lg bg-[#F7F7F7] text-black font-medium hover:bg-white hover:shadow-lg transition"
-                    >
-                        Browse our products
-                    </button>
+                    <div className="grid grid-cols-2 gap-4 max-w-md mb-8">
+                        <button
+                            onClick={onBrowse}
+                            className="py-3 rounded-lg bg-white text-black font-semibold hover:bg-gray-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-200"
+                        >
+                            Browse our products
+                        </button>
+                        <button
+                            onClick={onSolutions}
+                            className="py-3 rounded-lg border border-white/20 text-white font-medium hover:bg-white/5 hover:border-white/40 transition-all duration-200"
+                        >
+                            See how it works
+                        </button>
+                    </div>
+
+                    {/* Feature chips */}
+                    <div className="grid grid-cols-2 gap-3 max-w-md">
+                        {features.map((f) => {
+                            const Icon = f.icon;
+                            return (
+                                <div
+                                    key={f.label}
+                                    className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl ${f.bg} border ${f.border} transition hover:scale-[1.02]`}
+                                >
+                                    <Icon className={`w-4.5 h-4.5 ${f.color} flex-shrink-0`} />
+                                    <span className="text-sm text-gray-300 font-medium">{f.label}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 {/* Right: video */}
                 <div className="w-full flex justify-center lg:justify-end z-10">
-                    <div className="w-full max-w-sm md:max-w-md lg:max-w-xl rounded-lg overflow-hidden shadow-lg bg-black">
+                    <div className="w-full max-w-sm md:max-w-md lg:max-w-xl rounded-2xl overflow-hidden relative">
+                        <div className="absolute inset-0 rounded-2xl  pointer-events-none z-10" />
 
                         {!videoError ? (
                             <video
@@ -153,9 +199,13 @@ export default function Home({ onBrowse }) {
                 </div>
             </div>
 
-            {/* KPIs — live from backend */}
-            <div className="mt-6 md:mt-4 lg:mt-12">
-                <h2 className="text-2xl font-semibold mb-4">Key Metrics</h2>
+            {/* KPIs */}
+            <div className="mt-10 md:mt-12 lg:mt-16">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="h-px flex-1 bg-gradient-to-r from-purple-500/30 to-transparent" />
+                    <h2 className="text-xl font-semibold text-gray-300 whitespace-nowrap">Platform Metrics</h2>
+                    <div className="h-px flex-1 bg-gradient-to-l from-purple-500/30 to-transparent" />
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     {kpis.map((kpi) => {
@@ -185,6 +235,13 @@ export default function Home({ onBrowse }) {
                         );
                     })}
                 </div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div className="flex justify-center mt-10 lg:mt-14 animate-bounce">
+                <button onClick={onBrowse} className="text-gray-500 hover:text-gray-300 transition">
+                    <HiOutlineChevronDown className="w-6 h-6" />
+                </button>
             </div>
         </div>
     );

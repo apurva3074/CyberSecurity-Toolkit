@@ -11,6 +11,8 @@ import {
   HiOutlineChevronUp,
 } from 'react-icons/hi';
 
+const glossaryVideo = new URL('../assets/video-design.mp4', import.meta.url).href;
+
 const CATEGORIES = [
   { id: 'all', label: 'All', icon: HiOutlineShieldCheck },
   { id: 'phishing', label: 'Phishing & Scams', icon: HiOutlineExclamationCircle },
@@ -517,85 +519,133 @@ export default function Glossary() {
     return matchesSearch && matchesCategory;
   });
 
+  const categoryCounts = CATEGORIES.reduce((acc, cat) => {
+    acc[cat.id] = cat.id === 'all'
+      ? GLOSSARY_DATA.length
+      : GLOSSARY_DATA.filter((t) => t.category === cat.id).length;
+    return acc;
+  }, {});
+
   return (
     <section id="glossary-section" className="relative min-h-screen">
-      <div className="absolute -left-[20%] -top-[10%] w-[55vw] h-[55vw] min-w-[500px] min-h-[500px] rounded-full pointer-events-none" style={{ background: 'radial-gradient(circle, rgba(155,89,182,0.25) 0%, rgba(68,39,80,0.12) 55%, rgba(0,0,0,0) 100%)', filter: 'blur(12px)' }} />
-      <div className="max-w-4xl mx-auto py-16 px-6 relative z-10">
-        {/* Header */}
-      <div className="text-center mb-10">
-        <h2 className="text-4xl font-bold text-white mb-3">Cybersecurity Glossary</h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          Learn about cybersecurity concepts, attack types, and defense strategies.
-          Your go-to reference for staying safe online.
-        </p>
-      </div>
+      <div className="max-w-5xl mx-auto py-16 px-6 relative z-10">
 
-      {/* Search */}
-      <div className="relative mb-6">
-        <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search terms... (e.g., phishing, ransomware, SSL)"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
-        />
-      </div>
+        {/* Header with video */}
+        <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
+          <div className="md:w-1/2 flex justify-center">
+            <div className="w-[16rem] md:w-[20rem] lg:w-[24rem] rounded-2xl overflow-hidden shadow-2xl shadow-purple-500/10 border border-white/5">
+              <video
+                src={glossaryVideo}
+                className="w-full h-auto object-cover pointer-events-none"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-hidden="true"
+                tabIndex={-1}
+              />
+            </div>
+          </div>
+          <div className="md:w-1/2">
+            <p className="text-purple-400 text-sm font-semibold tracking-wider uppercase mb-2">Reference</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-3">Cybersecurity<br />Glossary</h2>
+            <p className="text-gray-400 text-base max-w-md mb-5">
+              {GLOSSARY_DATA.length} terms covering attack types, defense strategies, and security concepts.
+            </p>
+            <div className="relative w-full max-w-sm">
+              <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search terms..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-white/5 border border-white/10 rounded-xl pl-12 pr-4 py-3 text-base text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
+              />
+            </div>
+          </div>
+        </div>
 
-      {/* Category Filters */}
-      <div className="flex gap-2 flex-wrap mb-8">
-        {CATEGORIES.map((cat) => {
-          const Icon = cat.icon;
-          const count = cat.id === 'all'
-            ? GLOSSARY_DATA.length
-            : GLOSSARY_DATA.filter((t) => t.category === cat.id).length;
-          return (
+        {/* Category filters */}
+        <div className="flex gap-2 flex-wrap mb-8">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const active = category === cat.id;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setCategory(cat.id)}
+                className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition ${
+                  active
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                {cat.label}
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${active ? 'bg-white/20' : 'bg-white/10'}`}>
+                  {categoryCounts[cat.id]}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Results bar */}
+        <div className="flex items-center justify-between mb-5">
+          <p className="text-gray-500 text-sm">
+            {filtered.length} {filtered.length === 1 ? 'term' : 'terms'} found
+            {category !== 'all' && <span className="text-purple-400"> in {CATEGORIES.find(c => c.id === category)?.label}</span>}
+          </p>
+          {(search || category !== 'all') && (
             <button
-              key={cat.id}
-              onClick={() => setCategory(cat.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition ${
-                category === cat.id
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
-              }`}
+              onClick={() => { setSearch(''); setCategory('all'); }}
+              className="text-xs text-purple-400 hover:text-purple-300 font-medium transition"
             >
-              <Icon className="w-4 h-4" />
-              {cat.label}
-              <span className={`text-xs px-1.5 py-0.5 rounded-full ${
-                category === cat.id ? 'bg-white/20' : 'bg-white/10'
-              }`}>
-                {count}
-              </span>
+              Clear filters
             </button>
-          );
-        })}
-      </div>
-
-      {/* Results count */}
-      <p className="text-gray-500 text-sm mb-4">
-        {filtered.length} {filtered.length === 1 ? 'term' : 'terms'} found
-      </p>
-
-      {/* Terms */}
-      {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <HiOutlineSearch className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500">No terms match your search</p>
+          )}
         </div>
-      ) : (
-        <div className="space-y-3">
-          {filtered.map((item) => (
-            <TermCard
-              key={item.term}
-              item={item}
-              expanded={expandedTerm === item.term}
-              onToggle={() =>
-                setExpandedTerm(expandedTerm === item.term ? null : item.term)
-              }
-            />
-          ))}
+
+        {/* Terms — two column on desktop */}
+        {filtered.length === 0 ? (
+          <div className="text-center py-20">
+            <HiOutlineSearch className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+            <p className="text-gray-500 text-lg">No terms match your search</p>
+            <p className="text-gray-600 text-sm mt-1">Try a different keyword or clear filters</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            {filtered.map((item) => (
+              <TermCard
+                key={item.term}
+                item={item}
+                expanded={expandedTerm === item.term}
+                onToggle={() =>
+                  setExpandedTerm(expandedTerm === item.term ? null : item.term)
+                }
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Bottom info */}
+        <div className="mt-12 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-6">
+          <div className="flex-1">
+            <h3 className="text-lg font-bold text-white mb-1">Didn't find what you're looking for?</h3>
+            <p className="text-gray-400 text-sm">Ask our <span className="text-purple-400 font-semibold">SecBot</span> chatbot — it can explain any cybersecurity concept in simple terms.</p>
+          </div>
+          <div className="flex gap-4 text-center flex-shrink-0">
+            <div className="bg-white/5 rounded-xl px-5 py-3">
+              <p className="text-2xl font-bold text-purple-400">{GLOSSARY_DATA.length}</p>
+              <p className="text-gray-500 text-xs">Terms</p>
+            </div>
+            <div className="bg-white/5 rounded-xl px-5 py-3">
+              <p className="text-2xl font-bold text-blue-400">{CATEGORIES.length - 1}</p>
+              <p className="text-gray-500 text-xs">Categories</p>
+            </div>
+          </div>
         </div>
-      )}
       </div>
     </section>
   );

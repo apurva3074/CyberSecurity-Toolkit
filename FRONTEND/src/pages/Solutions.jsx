@@ -270,14 +270,38 @@ function GuideSection({ guide }) {
 
 export default function Solutions() {
   return (
-    <section id="solutions-section" className="max-w-4xl mx-auto py-16 px-6">
+    <section id="solutions-section" className="max-w-5xl mx-auto py-16 px-6">
       {/* Page Header */}
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-white mb-3">How It Works</h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          Step-by-step guides to help you use every tool on the Zentrya platform.
-          Click on a tool below to see the walkthrough.
+      <div className="text-center mb-14">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
+          <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse" />
+          <span className="text-sm text-purple-300 font-medium">Step-by-Step Guides</span>
+        </div>
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">How It Works</h2>
+        <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
+          Learn how to use every tool on the Zentrya platform with detailed walkthroughs.
+          Click on a tool below to expand the guide.
         </p>
+      </div>
+
+      {/* Quick stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+          <p className="text-3xl font-bold text-purple-400">4</p>
+          <p className="text-gray-500 text-sm mt-1">Tools Available</p>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+          <p className="text-3xl font-bold text-blue-400">15+</p>
+          <p className="text-gray-500 text-sm mt-1">Step-by-Step Guides</p>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+          <p className="text-3xl font-bold text-green-400">2 min</p>
+          <p className="text-gray-500 text-sm mt-1">Avg. Setup Time</p>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-5 text-center">
+          <p className="text-3xl font-bold text-yellow-400">Free</p>
+          <p className="text-gray-500 text-sm mt-1">All Features</p>
+        </div>
       </div>
 
       {/* Guides */}
@@ -288,10 +312,12 @@ export default function Solutions() {
       </div>
 
       {/* Bottom CTA */}
-      <div className="text-center mt-12">
-        <p className="text-gray-500 text-sm">
-          Still have questions? Ask our <span className="text-purple-400">SecBot</span> chatbot for help anytime.
+      <div className="mt-14 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 border border-purple-500/20 rounded-2xl p-8 text-center">
+        <h3 className="text-xl font-bold text-white mb-2">Need more help?</h3>
+        <p className="text-gray-400 text-sm mb-1">
+          Our <span className="text-purple-400 font-semibold">SecBot</span> AI chatbot is available 24/7 to answer your questions and guide you through any tool.
         </p>
+        <p className="text-gray-500 text-xs">Look for the chat icon in the bottom-right corner of the screen.</p>
       </div>
     </section>
   );

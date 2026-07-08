@@ -1,5 +1,50 @@
 @import "tailwindcss";
 
+@keyframes floatOrb {
+  0%   { transform: translate(0, 0) scale(1); }
+  15%  { transform: translate(30vw, 10vh) scale(1.1); }
+  30%  { transform: translate(50vw, 40vh) scale(0.95); }
+  45%  { transform: translate(20vw, 60vh) scale(1.05); }
+  60%  { transform: translate(60vw, 20vh) scale(0.9); }
+  75%  { transform: translate(10vw, 50vh) scale(1.08); }
+  90%  { transform: translate(40vw, 5vh) scale(0.97); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.floating-orb {
+  position: fixed;
+  width: 45vw;
+  height: 45vw;
+  min-width: 350px;
+  min-height: 350px;
+  max-width: 700px;
+  max-height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.25) 0%, rgba(109, 40, 217, 0.14) 40%, rgba(88, 28, 135, 0.06) 65%, rgba(0, 0, 0, 0) 80%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+  animation: floatOrb 25s ease-in-out infinite;
+  top: -10%;
+  left: -10%;
+}
+
+/* Home page: keep the orb above and left of the hero video, never drifting below or past it */
+@keyframes floatOrbHome {
+  0%   { transform: translate(0, 0) scale(1); }
+  15%  { transform: translate(10vw, 3vh) scale(1.1); }
+  30%  { transform: translate(18vw, 8vh) scale(0.95); }
+  45%  { transform: translate(5vw, 12vh) scale(1.05); }
+  60%  { transform: translate(20vw, 6vh) scale(0.9); }
+  75%  { transform: translate(2vw, 10vh) scale(1.08); }
+  90%  { transform: translate(14vw, 2vh) scale(0.97); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+.floating-orb.floating-orb-home {
+  animation-name: floatOrbHome;
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

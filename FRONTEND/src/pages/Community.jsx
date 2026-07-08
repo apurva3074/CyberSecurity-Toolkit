@@ -9,9 +9,12 @@ import {
   HiOutlineReply,
   HiOutlineUser,
   HiOutlineClock,
+  HiOutlineCheckCircle,
+  HiOutlineQuestionMarkCircle,
 } from 'react-icons/hi';
 
 import { API_BASE_URL } from '../config';
+import communityImage from '../assets/community.jpg';
 const API_BASE = `${API_BASE_URL}/api/community`;
 
 function TimeAgo({ date }) {
@@ -43,6 +46,7 @@ export default function Community() {
   const [activeQuestionId, setActiveQuestionId] = useState(null);
   const [answerBody, setAnswerBody] = useState('');
   const [expandedId, setExpandedId] = useState(null);
+  const [filter, setFilter] = useState('all');
 
   async function loadPage(pageNumber) {
     setLoading(true);
@@ -75,7 +79,7 @@ export default function Community() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const list = Array.isArray(questions) ? questions.slice() : [];
-    const filteredList = q
+    let filteredList = q
       ? list.filter(
           (it) =>
             (it.title || '').toLowerCase().includes(q) ||
@@ -83,8 +87,15 @@ export default function Community() {
             (it.answers || []).some((a) => (a.body || '').toLowerCase().includes(q))
         )
       : list;
+
+    if (filter === 'answered') {
+      filteredList = filteredList.filter(it => (it.answers?.length || 0) > 0);
+    } else if (filter === 'unanswered') {
+      filteredList = filteredList.filter(it => (it.answers?.length || 0) === 0);
+    }
+
     return filteredList.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  }, [questions, query]);
+  }, [questions, query, filter]);
 
   async function handleAsk(e) {
     e.preventDefault();
@@ -138,19 +149,34 @@ export default function Community() {
   }
 
   const totalAnswers = questions.reduce((sum, q) => sum + (q.answers?.length || 0), 0);
+  const resolvedCount = questions.filter((q) => (q.answers?.length || 0) > 0).length;
+  const unansweredCount = questions.length - resolvedCount;
 
   return (
-    <section id="community-section" className="max-w-4xl mx-auto py-16 px-6">
-      {/* Header */}
-      <div className="text-center mb-10">
-        <h2 className="text-4xl font-bold text-white mb-3">Community</h2>
-        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-          Ask questions, share knowledge, and help others stay safe online.
-        </p>
+    <section id="community-section" className="max-w-5xl mx-auto py-16 px-6">
+      {/* Header with illustration */}
+      <div className="flex flex-col md:flex-row items-center gap-10 mb-10">
+        <div className="md:w-1/2 flex justify-center">
+          <img src={communityImage} alt="Community" className="w-[16rem] md:w-[20rem] lg:w-[24rem] h-auto object-contain rounded-2xl" />
+        </div>
+        <div className="md:w-1/2">
+          <p className="text-green-400 text-sm font-semibold tracking-wider uppercase mb-2">Community</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-3">Q&A Forum</h2>
+          <p className="text-gray-400 text-base max-w-md mb-5">
+            Ask questions, share knowledge, and help others stay safe online.
+          </p>
+          <button
+            onClick={() => setShowAsk((s) => !s)}
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold hover:from-purple-700 hover:to-indigo-700 transition text-sm"
+          >
+            {showAsk ? <HiOutlineX className="w-4 h-4" /> : <HiOutlinePlusCircle className="w-4 h-4" />}
+            {showAsk ? 'Cancel' : 'Ask a Question'}
+          </button>
+        </div>
       </div>
 
-      {/* Stats bar */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      {/* Stats row */}
+      <div className="grid grid-cols-4 gap-3 mb-8">
         <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
           <p className="text-2xl font-bold text-white">{questions.length}</p>
           <p className="text-gray-500 text-xs mt-1">Questions</p>
@@ -159,32 +185,14 @@ export default function Community() {
           <p className="text-2xl font-bold text-purple-400">{totalAnswers}</p>
           <p className="text-gray-500 text-xs mt-1">Answers</p>
         </div>
-        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center">
-          <p className="text-2xl font-bold text-green-400">
-            {questions.filter((q) => (q.answers?.length || 0) > 0).length}
-          </p>
+        <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-4 text-center">
+          <p className="text-2xl font-bold text-green-400">{resolvedCount}</p>
           <p className="text-gray-500 text-xs mt-1">Resolved</p>
         </div>
-      </div>
-
-      {/* Search + Ask */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
-          <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search questions or answers..."
-            className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
-          />
+        <div className="bg-yellow-500/5 border border-yellow-500/10 rounded-xl p-4 text-center">
+          <p className="text-2xl font-bold text-yellow-400">{unansweredCount}</p>
+          <p className="text-gray-500 text-xs mt-1">Needs Help</p>
         </div>
-        <button
-          onClick={() => setShowAsk((s) => !s)}
-          className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-semibold hover:from-purple-700 hover:to-indigo-700 transition text-sm"
-        >
-          {showAsk ? <HiOutlineX className="w-4 h-4" /> : <HiOutlinePlusCircle className="w-4 h-4" />}
-          {showAsk ? 'Cancel' : 'Ask Question'}
-        </button>
       </div>
 
       {/* Error */}
@@ -196,30 +204,30 @@ export default function Community() {
 
       {/* Ask form */}
       {showAsk && (
-        <form onSubmit={handleAsk} className="bg-white/5 border border-white/10 rounded-xl p-5 mb-6 space-y-3">
-          <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-            <HiOutlineChatAlt2 className="w-5 h-5 text-purple-400" />
-            Ask a Question
+        <form onSubmit={handleAsk} className="bg-gradient-to-br from-purple-500/5 to-indigo-500/5 border border-purple-500/20 rounded-2xl p-6 mb-8 space-y-4">
+          <h3 className="text-white font-bold text-xl flex items-center gap-2">
+            <HiOutlineChatAlt2 className="w-6 h-6 text-purple-400" />
+            Ask the Community
           </h3>
           <input
             value={newTitle}
             onChange={(e) => setNewTitle(e.target.value)}
             placeholder="What's your question? Be specific."
-            className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
+            className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
             disabled={posting}
           />
           <textarea
             value={newBody}
             onChange={(e) => setNewBody(e.target.value)}
             placeholder="Add more details, context, or what you've already tried (optional)"
-            className="w-full bg-black/30 border border-white/10 rounded-lg px-4 py-3 text-white text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
+            className="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
             rows={3}
             disabled={posting}
           />
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-6 py-2.5 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition disabled:opacity-50"
+              className="px-6 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-semibold transition disabled:opacity-50"
               disabled={posting || !newTitle.trim()}
             >
               {posting ? 'Posting...' : 'Post Question'}
@@ -228,62 +236,80 @@ export default function Community() {
         </form>
       )}
 
+      {/* Search + Filter bar */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <HiOutlineSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search questions or answers..."
+            className="w-full bg-white/5 border border-white/10 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30 focus:border-purple-500/50"
+          />
+        </div>
+        <div className="flex gap-2">
+          {[
+            { id: 'all', label: 'All' },
+            { id: 'unanswered', label: 'Needs Help' },
+            { id: 'answered', label: 'Resolved' },
+          ].map(f => (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              className={`px-4 py-2.5 rounded-xl text-sm font-medium transition ${filter === f.id ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'}`}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Loading */}
       {loading && (
-        <div className="text-center py-12 text-gray-500">Loading questions...</div>
+        <div className="text-center py-16 text-gray-500">Loading questions...</div>
       )}
 
-      {/* Questions */}
+      {/* Empty state */}
       {!loading && filtered.length === 0 && (
-        <div className="text-center py-16">
-          <HiOutlineChatAlt2 className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-          <p className="text-gray-500 mb-2">No questions found</p>
-          <p className="text-gray-600 text-sm">Be the first to ask one!</p>
+        <div className="text-center py-20">
+          <HiOutlineQuestionMarkCircle className="w-14 h-14 text-gray-600 mx-auto mb-4" />
+          <p className="text-gray-400 text-lg font-semibold mb-1">No questions found</p>
+          <p className="text-gray-600 text-sm">Be the first to ask one — the community is here to help!</p>
         </div>
       )}
 
-      {!loading && (
-        <div className="space-y-4">
+      {/* Questions */}
+      {!loading && filtered.length > 0 && (
+        <div className="space-y-3">
           {filtered.map((q) => {
             const answerCount = (q.answers || []).length;
             const isExpanded = expandedId === q.id;
+            const hasAnswers = answerCount > 0;
             return (
               <article
                 key={q.id}
-                className="bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-white/20 transition"
+                className={`border rounded-xl overflow-hidden transition ${isExpanded ? 'bg-white/[0.04] border-purple-500/20' : 'bg-white/[0.02] border-white/10 hover:border-white/20'}`}
               >
                 {/* Question header */}
                 <button
                   onClick={() => setExpandedId(isExpanded ? null : q.id)}
                   className="w-full flex items-start gap-4 p-5 text-left"
                 >
-                  {/* Answer count badge */}
-                  <div
-                    className={`flex-shrink-0 w-12 h-12 rounded-xl flex flex-col items-center justify-center ${
-                      answerCount > 0
-                        ? 'bg-green-500/10 border border-green-500/20'
-                        : 'bg-white/5 border border-white/10'
-                    }`}
-                  >
-                    <span
-                      className={`text-lg font-bold ${
-                        answerCount > 0 ? 'text-green-400' : 'text-gray-500'
-                      }`}
-                    >
-                      {answerCount}
-                    </span>
-                    <span className="text-[9px] text-gray-500 -mt-0.5">
-                      {answerCount === 1 ? 'ans' : 'ans'}
-                    </span>
+                  {/* Status icon */}
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${hasAnswers ? 'bg-green-500/10' : 'bg-yellow-500/10'}`}>
+                    {hasAnswers
+                      ? <HiOutlineCheckCircle className="w-5 h-5 text-green-400" />
+                      : <HiOutlineQuestionMarkCircle className="w-5 h-5 text-yellow-400" />
+                    }
                   </div>
 
                   {/* Question text */}
                   <div className="flex-1 min-w-0">
                     <h3 className="text-white font-semibold text-base">{q.title}</h3>
                     {q.body && (
-                      <p className="text-gray-400 text-sm mt-1 line-clamp-2">{q.body}</p>
+                      <p className="text-gray-500 text-sm mt-1 line-clamp-1">{q.body}</p>
                     )}
-                    <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
+                    <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
                         <HiOutlineUser className="w-3 h-3" />
                         {q.author_username || 'guest'}
@@ -292,6 +318,10 @@ export default function Community() {
                         <HiOutlineClock className="w-3 h-3" />
                         <TimeAgo date={q.created_at} />
                       </span>
+                      <span className="flex items-center gap-1">
+                        <HiOutlineChatAlt2 className="w-3 h-3" />
+                        {answerCount} {answerCount === 1 ? 'answer' : 'answers'}
+                      </span>
                     </div>
                   </div>
                 </button>
@@ -299,7 +329,6 @@ export default function Community() {
                 {/* Expanded: answers + reply */}
                 {isExpanded && (
                   <div className="border-t border-white/5 px-5 pb-5 animate-expandDown">
-                    {/* Answers */}
                     {answerCount > 0 ? (
                       <div className="space-y-3 pt-4">
                         {q.answers.map((a) => (
@@ -321,7 +350,6 @@ export default function Community() {
                       <p className="text-gray-500 text-sm pt-4">No answers yet — be the first to help!</p>
                     )}
 
-                    {/* Answer form */}
                     <div className="mt-4">
                       {activeQuestionId === q.id ? (
                         <form onSubmit={(e) => handleAnswer(e, q.id)} className="space-y-3">
@@ -394,6 +422,24 @@ export default function Community() {
           )}
         </div>
       )}
+
+      {/* Bottom info */}
+      <div className="mt-12 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/20 rounded-2xl p-8 flex flex-col md:flex-row items-center gap-6">
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-white mb-1">Community Guidelines</h3>
+          <p className="text-gray-400 text-sm">Be respectful, stay on topic, and help each other learn. Questions about phishing, malware, and online safety are welcome.</p>
+        </div>
+        <div className="flex gap-3 flex-shrink-0">
+          <div className="bg-white/5 rounded-xl px-5 py-3 text-center">
+            <HiOutlineChatAlt2 className="w-6 h-6 text-green-400 mx-auto mb-1" />
+            <p className="text-gray-500 text-[10px]">Ask & Answer</p>
+          </div>
+          <div className="bg-white/5 rounded-xl px-5 py-3 text-center">
+            <HiOutlineCheckCircle className="w-6 h-6 text-purple-400 mx-auto mb-1" />
+            <p className="text-gray-500 text-[10px]">Help Others</p>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

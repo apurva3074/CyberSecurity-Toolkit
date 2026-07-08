@@ -10,6 +10,7 @@ import {
 } from 'react-icons/hi';
 import { supabase } from '../lib/supabaseClient';
 import { API_BASE_URL } from '../config';
+import overviewIllustration from '../assets/admin-overview-illustration.png';
 
 function TimeAgo({ date }) {
   if (!date) return <span>—</span>;
@@ -102,6 +103,21 @@ export default function AdminOverview({ onNavigate }) {
 
   return (
     <div className="space-y-8">
+      {/* Welcome Banner */}
+      <div className="relative bg-gradient-to-r from-purple-700/20 to-indigo-600/10 border border-purple-500/20 rounded-2xl overflow-hidden flex items-center justify-between">
+        <div className="px-6 py-6 sm:px-8 sm:py-8 max-w-md">
+          <h2 className="text-white text-2xl font-bold">Welcome back, Admin</h2>
+          <p className="text-gray-400 text-sm mt-2">
+            Here's what's happening across takedown requests and user accounts today.
+          </p>
+        </div>
+        <img
+          src={overviewIllustration}
+          alt=""
+          className="hidden sm:block w-48 md:w-60 flex-shrink-0 self-end pointer-events-none select-none"
+        />
+      </div>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {loading

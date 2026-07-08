@@ -8,14 +8,15 @@ import {
   HiOutlineDocumentSearch,
   HiOutlineLogout,
   HiOutlineMenuAlt2,
+  HiOutlineCog,
 } from 'react-icons/hi';
 import Zentrya from '../assets/Zentrya.svg';
 
 const navItems = [
-  { id: 'overview', label: 'Overview', icon: HiOutlineViewGrid },
-  { id: 'takedowns', label: 'Takedowns', icon: HiOutlineShieldExclamation },
-  { id: 'users', label: 'Users', icon: HiOutlineUsers },
-  { id: 'scan-logs', label: 'Scan Logs', icon: HiOutlineDocumentSearch },
+  { id: 'overview', label: 'Overview', icon: HiOutlineViewGrid, desc: 'Dashboard stats' },
+  { id: 'takedowns', label: 'Takedowns', icon: HiOutlineShieldExclamation, desc: 'Manage requests' },
+  { id: 'users', label: 'Users', icon: HiOutlineUsers, desc: 'User accounts' },
+  { id: 'scan-logs', label: 'Scan Logs', icon: HiOutlineDocumentSearch, desc: 'Activity history' },
 ];
 
 export default function AdminLayout({ currentPage, onNavigate, children, pendingCount = 0 }) {
@@ -41,7 +42,7 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-[#111119] border-r border-white/5 flex flex-col z-40 transition-all duration-300 ${
-          sidebarOpen ? 'w-64' : 'w-20'
+          sidebarOpen ? 'w-64' : 'w-[72px]'
         }`}
       >
         {/* Logo */}
@@ -55,8 +56,30 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
           )}
         </div>
 
+        {/* Admin profile */}
+        {sidebarOpen && (
+          <div className="px-4 py-4 border-b border-white/5 animate-fadeIn">
+            <div className="flex items-center gap-3 bg-white/5 rounded-xl p-3">
+              <div className="h-9 w-9 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                {initial}
+              </div>
+              <div className="min-w-0">
+                <p className="text-white text-sm font-medium truncate">{adminEmail || 'Admin'}</p>
+                <p className="text-gray-500 text-[10px]">Administrator</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Section label */}
+        {sidebarOpen && (
+          <div className="px-5 pt-5 pb-2">
+            <p className="text-gray-600 text-[10px] font-semibold uppercase tracking-widest">Navigation</p>
+          </div>
+        )}
+
         {/* Nav Items */}
-        <nav className="flex-1 px-3 py-4 space-y-1">
+        <nav className={`flex-1 px-3 ${sidebarOpen ? 'py-1' : 'py-4'} space-y-1`}>
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = currentPage === item.id;
@@ -65,21 +88,37 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
               <button
                 key={item.id}
                 onClick={() => onNavigate(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative ${
-                  active
-                    ? 'bg-purple-600/20 text-purple-400 shadow-sm shadow-purple-500/10'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                className={`flex items-center rounded-xl text-sm font-medium transition-all duration-200 relative group ${
+                  sidebarOpen
+                    ? `w-full gap-3 px-3 py-3 ${active ? 'bg-gradient-to-r from-purple-600/20 to-indigo-600/10 text-purple-400 border border-purple-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white border border-transparent'}`
+                    : `w-11 h-11 justify-center mx-auto ${active ? 'bg-purple-600/20 text-purple-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`
                 }`}
                 title={!sidebarOpen ? item.label : undefined}
               >
-                <Icon className="w-5 h-5 flex-shrink-0" />
-                {sidebarOpen && <span className="flex-1 text-left">{item.label}</span>}
-                {showBadge && (
-                  <span className={`bg-yellow-500 text-black text-[10px] font-bold rounded-full min-w-[20px] text-center ${
-                    sidebarOpen ? 'px-1.5 py-0.5' : 'absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center'
-                  }`}>
-                    {pendingCount}
-                  </span>
+                {sidebarOpen ? (
+                  <>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${active ? 'bg-purple-600/20' : 'bg-white/5 group-hover:bg-white/10'}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <div className="flex-1 text-left min-w-0">
+                      <span className="block leading-tight">{item.label}</span>
+                      <span className={`text-[10px] ${active ? 'text-purple-400/60' : 'text-gray-600'}`}>{item.desc}</span>
+                    </div>
+                    {showBadge && (
+                      <span className="bg-yellow-500 text-black text-[10px] font-bold rounded-full min-w-[20px] text-center px-1.5 py-0.5">
+                        {pendingCount}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Icon className="w-5 h-5" />
+                    {showBadge && (
+                      <span className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center bg-yellow-500 text-black text-[10px] font-bold rounded-full">
+                        {pendingCount}
+                      </span>
+                    )}
+                  </>
                 )}
               </button>
             );
@@ -109,7 +148,7 @@ export default function AdminLayout({ currentPage, onNavigate, children, pending
       {/* Main content */}
       <main
         className={`flex-1 transition-all duration-300 ${
-          sidebarOpen ? 'ml-64' : 'ml-20'
+          sidebarOpen ? 'ml-64' : 'ml-[72px]'
         }`}
       >
         {/* Top bar */}

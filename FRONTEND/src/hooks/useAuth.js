@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const resolving = useRef(false);
 
   const fetchRole = async (userId) => {
     const { data, error } = await supabase
@@ -13,31 +14,36 @@ export default function useAuth() {
       .eq('id', userId)
       .single();
 
-    if (!error && data) {
-      setRole(data.role);
+    return (!error && data) ? data.role : 'user';
+  };
+
+  const resolveUser = async (session) => {
+    if (resolving.current) return;
+    resolving.current = true;
+    setLoading(true);
+
+    const currentUser = session?.user ?? null;
+
+    if (currentUser) {
+      const userRole = await fetchRole(currentUser.id);
+      setUser(currentUser);
+      setRole(userRole);
     } else {
-      setRole('user');
+      setUser(null);
+      setRole(null);
     }
+
+    setLoading(false);
+    resolving.current = false;
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        await fetchRole(currentUser.id);
-      }
-      setLoading(false);
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      resolveUser(session);
     });
 
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      const currentUser = session?.user ?? null;
-      setUser(currentUser);
-      if (currentUser) {
-        await fetchRole(currentUser.id);
-      } else {
-        setRole(null);
-      }
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      resolveUser(session);
     });
 
     return () => {

@@ -41,7 +41,7 @@ export default function Footer({ onNavigate }) {
   };
 
   return (
-    <footer className="bg-[#080810] border-t border-white/5">
+    <footer className="bg-black/80 border-t border-white/5 relative z-[2]">
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
