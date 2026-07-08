@@ -116,7 +116,7 @@ export default function Auth() {
                         <img
                             src={Logo}
                             alt="Logo"
-                            className="h-15 w-15 absolute left-3 top-1/2 transform -translate-y-1/2"
+                            className="h-15 w-15 absolute left-0 top-1/2 transform -translate-y-1/2"
                             style={{
                                 animation: 'slow-spin 8s linear infinite',
                                 // fallback for Tailwind users: add 'animate-spin-slow' to your Tailwind config if desired
@@ -124,7 +124,7 @@ export default function Auth() {
                         />
                     </div>
 
-                    <h2 className="text-2xl sm:text-3xl font-semibold text-left mb-4 sm:mb-6 pl-8" style={{ color: '#292929' }}>
+                    <h2 className="text-2xl sm:text-3xl font-semibold text-left mb-4 sm:mb-6" style={{ color: '#292929' }}>
                         {isLogin ? 'Login to Zentrya' : 'Sign Up for Zentrya'}
                     </h2>
 
@@ -142,7 +142,7 @@ export default function Auth() {
                             {/* Login Form */}
                             <form
                                 onSubmit={handleSubmit}
-                                className="space-y-4 flex flex-col items-center w-1/2 px-2"
+                                className="space-y-4 flex flex-col items-start w-1/2"
                                 style={{ minWidth: 0 }}
                             >
                                 <input
@@ -175,7 +175,7 @@ export default function Auth() {
                             {/* Sign Up Form */}
                             <form
                                 onSubmit={handleSubmit}
-                                className="space-y-4 flex flex-col items-center w-1/2 px-2"
+                                className="space-y-4 flex flex-col items-start w-1/2"
                                 style={{ minWidth: 0 }}
                             >
                                 <input
