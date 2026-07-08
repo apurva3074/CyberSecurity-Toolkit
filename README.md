@@ -2,6 +2,9 @@
 
 A full-stack cybersecurity platform with URL phishing detection, email spam scanning, website metadata fetching, malicious site takedown requests, and a Chrome extension for real-time browsing protection.
 
+<img width="1893" height="867" alt="image" src="https://github.com/user-attachments/assets/a6d304ba-889f-4a0d-ad15-577f3471f12a" />
+
+
 ## Project Structure
 
 ```
