@@ -68,7 +68,7 @@ BE/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/zentrya.git
+git clone https://github.com/your-username/CyberSecurity-Toolkit.git
 cd zentrya
 ```
 
