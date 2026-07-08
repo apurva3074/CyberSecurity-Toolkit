@@ -35,13 +35,13 @@ const guides = [
         mediaSrc: '/URL_SCANNER1.png',
       },
       {
-        title: 'Enter the suspicious URL',
+        title: 'Click the Scan button',
         description: 'Type or paste the full URL you want to check into the input field. Include https:// for best results.',
         mediaType: 'screenshot',
         mediaSrc: '/URL_SCANNER2.png',
       },
       {
-        title: 'Click "Scan URL"',
+        title: 'Enter the suspicious URL, Click "Scan URL"',
         description: 'Hit the scan button to analyze the URL. Our AI model evaluates 11+ features including domain age, SSL status, and URL patterns.',
         mediaType: 'screenshot',
         mediaSrc: '/URL_SCANNER3.png',
@@ -73,13 +73,13 @@ const guides = [
         mediaSrc: '/EMAIL_SCANNER1.png',
       },
       {
-        title: 'Paste the email content',
+        title: 'Click on Email Scanning ',
         description: 'Copy the suspicious email content (body text) and paste it into the input area. The more content you provide, the more accurate the analysis.',
         mediaType: 'screenshot',
         mediaSrc: '/EMAIL_SCANNER2.png',
       },
       {
-        title: 'Run the scan',
+        title: 'Enter your Email',
         description: 'Click the scan button. Our spam detection model uses NLP and TF-IDF vectorization to analyze the text for known spam and phishing patterns.',
         mediaType: 'screenshot',
         mediaSrc: '/EMAIL_SCANNER3.png',
@@ -240,7 +240,7 @@ function GuideSection({ guide }) {
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center gap-3 sm:gap-5 p-4 sm:p-6 text-left hover:bg-white/5 transition"
       >
-        <img src={guide.image} alt={guide.title} className="w-12 h-12 sm:w-16 sm:h-16 object-contain flex-shrink-0" />
+        <img src={guide.image} alt={guide.title} className="w-16 h-16 object-contain flex-shrink-0" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <Icon className={`w-5 h-5 ${guide.accentText} flex-shrink-0`} />

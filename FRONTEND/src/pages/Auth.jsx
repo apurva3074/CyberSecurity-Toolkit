@@ -150,7 +150,7 @@ export default function Auth() {
                                     placeholder="Email Address"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
-                                    className="w-full max-w-xs px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
+                                    className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
                                     style={{ borderColor: '#8AC0FF', color: '#000000', background: '#fff', boxShadow: 'none' }}
                                     required
                                 />
@@ -159,13 +159,13 @@ export default function Auth() {
                                     placeholder="Password"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
-                                    className="w-full max-w-xs px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
+                                    className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
                                     style={{ borderColor: '#8AC0FF', color: '#000000', background: '#fff', boxShadow: 'none' }}
                                     required
                                 />
                                 <button
                                     type="submit"
-                                    className="w-full max-w-xs py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
+                                    className="w-full py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
                                     style={{ background: '#111344', color: '#fff', borderColor: '#442750' }}
                                     disabled={loading}
                                 >
@@ -183,7 +183,7 @@ export default function Auth() {
                                     placeholder="Email Address"
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
-                                    className="w-full max-w-xs px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
+                                    className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
                                     style={{ borderColor: '#8AC0FF', color: '#000', background: '#fff', boxShadow: 'none' }}
                                     required
                                 />
@@ -192,13 +192,13 @@ export default function Auth() {
                                     placeholder="Password"
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
-                                    className="w-full max-w-xs px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
+                                    className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#8AC0FF] text-sm sm:text-base"
                                     style={{ borderColor: '#8AC0FF', color: '#000', background: '#fff', boxShadow: 'none' }}
                                     required
                                 />
                                 <button
                                     type="submit"
-                                    className="w-full max-w-xs py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
+                                    className="w-full py-3 rounded-3xl font-semibold border transition text-sm sm:text-base"
                                     style={{ background: '#111344', color: '#fff', borderColor: '#442750' }}
                                     disabled={loading}
                                 >
