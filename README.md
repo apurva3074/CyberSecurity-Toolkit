@@ -249,18 +249,6 @@ update public.profiles set role = 'admin' where email = 'your-email@example.com'
 
 ---
 
-### 6. Gmail Integration Setup (Optional)
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create or select a project
-3. Enable the **Gmail API**
-4. Go to **APIs & Services > Credentials**
-5. Create an **OAuth 2.0 Client ID** (Web application)
-6. Set Authorized redirect URI: `http://localhost:8000/api/google/oauth2/callback`
-7. Set Authorized JavaScript origins: `http://localhost:8000`
-8. Copy Client ID and Client Secret to your backend env variables
-9. Go to **OAuth consent screen** > Add your email as a test user
-
 ---
 
 ## API Endpoints
