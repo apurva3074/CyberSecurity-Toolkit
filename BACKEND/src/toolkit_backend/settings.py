@@ -13,12 +13,19 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from dotenv import load_dotenv
 
 # Allow OAuth over HTTP for local development.
 os.environ.setdefault('OAUTHLIB_INSECURE_TRANSPORT', '1')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load BACKEND/.env so API keys (e.g. MISTRAL_API_KEY) don't need to be
+# set manually in the shell every session. Real env vars still take
+# precedence (e.g. in production), since load_dotenv() defaults to not
+# overriding already-set variables.
+load_dotenv(BASE_DIR.parent / '.env')
 
 
 # Quick-start development settings - unsuitable for production

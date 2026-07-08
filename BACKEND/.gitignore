@@ -18,6 +18,7 @@ staticfiles/
 # Env files / secrets
 .env
 .env.*
+!.env.example
 
 # Byte-compiled / optimized / DLL files
 *.so
