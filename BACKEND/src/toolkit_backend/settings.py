@@ -164,6 +164,8 @@ DEFAULT_FROM_EMAIL = 'security@zentrya.com'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Vite local dev
     "http://localhost:3000",  # Alternative local port
+    "https://zentryahq.site",
+    "https://www.zentryahq.site",
 ]
 
 # Allow Chrome extension and all Vercel deployments of this frontend
