@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { HiOutlineUpload, HiOutlineX, HiOutlineCheckCircle, HiOutlineClock, HiOutlineExclamationCircle, HiOutlineArrowRight, HiOutlineArrowLeft } from "react-icons/hi";
 
 import { API_BASE_URL } from "../../config";
+import { fetchWithRetry } from "../../lib/fetchWithRetry";
 const API_URL = `${API_BASE_URL}/api/takedown`;
 
 const STATUS_CONFIG = {
@@ -64,7 +65,7 @@ export default function TakedownRequest({ takedownDomain, setTakedownDomain, tak
                 formData.append("screenshot", screenshot);
             }
 
-            const response = await fetch(`${API_URL}/request/`, {
+            const response = await fetchWithRetry(`${API_URL}/request/`, {
                 method: "POST",
                 body: formData,
             });
@@ -93,7 +94,7 @@ export default function TakedownRequest({ takedownDomain, setTakedownDomain, tak
     const checkStatus = async () => {
         if (!trackingId) return;
         try {
-            const res = await fetch(`${API_URL}/${trackingId}/`);
+            const res = await fetchWithRetry(`${API_URL}/${trackingId}/`);
             const data = await res.json();
             setRequestStatus(data.status);
         } catch {

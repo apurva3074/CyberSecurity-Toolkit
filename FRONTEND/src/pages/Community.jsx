@@ -14,6 +14,7 @@ import {
 } from 'react-icons/hi';
 
 import { API_BASE_URL } from '../config';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import communityImage from '../assets/community.jpg';
 const API_BASE = `${API_BASE_URL}/api/community`;
 
@@ -52,7 +53,7 @@ export default function Community() {
     setLoading(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/questions/?page=${pageNumber}`);
+      const res = await fetchWithRetry(`${API_BASE}/questions/?page=${pageNumber}`);
       if (!res.ok) throw new Error('Failed to load');
       const data = await res.json();
 
@@ -103,7 +104,7 @@ export default function Community() {
     setPosting(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/questions/`, {
+      const res = await fetchWithRetry(`${API_BASE}/questions/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title: newTitle.trim(), body: newBody.trim() }),
@@ -127,7 +128,7 @@ export default function Community() {
     setPosting(true);
     setError('');
     try {
-      const res = await fetch(`${API_BASE}/answers/`, {
+      const res = await fetchWithRetry(`${API_BASE}/answers/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ body: answerBody.trim(), question: questionId }),

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { API_BASE_URL } from "../../config";
+import { fetchWithRetry } from "../../lib/fetchWithRetry";
 import {
     HiOutlineMail,
     HiOutlineShieldCheck,
@@ -32,7 +33,7 @@ export function ManualEmailScanner() {
         setError(null);
         setResult(null);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/spam/predict/`, {
+            const response = await fetchWithRetry(`${API_BASE_URL}/api/spam/predict/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ message: emailText }),
@@ -124,7 +125,7 @@ export function GmailScanner() {
         setGmailLoading(true);
         setGmailError(null);
         try {
-            const response = await fetch(
+            const response = await fetchWithRetry(
                 `${API_BASE_URL}/api/google/scan/?max_results=20&token=${token}`
             );
             const data = await response.json();

@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../../config';
+import { fetchWithRetry } from '../../lib/fetchWithRetry';
 import { useState } from "react";
 
 function UrlScanner({ urlInput, setUrlInput, light }) {
@@ -17,7 +18,7 @@ function UrlScanner({ urlInput, setUrlInput, light }) {
         }
         setLoading(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/api/phishing/predict/`, {
+            const response = await fetchWithRetry(`${API_BASE_URL}/api/phishing/predict/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url }),

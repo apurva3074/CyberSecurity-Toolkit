@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '../../config';
+import { fetchWithRetry } from '../../lib/fetchWithRetry';
 import { useState } from "react";
 import '../../styles/customScrollbar.css';
 
@@ -24,7 +25,7 @@ export default function MetadataFetcher({ typoDomain, setTypoDomain, setShowRece
         setLoading(true);
         setShowRecentScans?.(true);
         try {
-            const res = await fetch(`${API_BASE_URL}/api/metadata/metadata/`, {
+            const res = await fetchWithRetry(`${API_BASE_URL}/api/metadata/metadata/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url })
