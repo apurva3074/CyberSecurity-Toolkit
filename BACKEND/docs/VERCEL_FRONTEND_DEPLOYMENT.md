@@ -14,13 +14,13 @@
 In your frontend project root, create `.env.example`:
 
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 Create `.env` (don't commit this):
 
 ```env
-VITE_API_URL=http://localhost:8000
+VITE_API_BASE_URL=http://localhost:8000
 ```
 
 ### 1.2 Update API Configuration
@@ -29,7 +29,7 @@ Create or update `src/config/api.js`:
 
 ```javascript
 // src/config/api.js
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+export const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 // Remove trailing slash if present
 export const API_BASE_URL = API_URL.replace(/\/$/, "");
@@ -116,7 +116,7 @@ Vercel will auto-detect React Vite. Verify these settings:
 
 1. Scroll to **"Environment Variables"** section
 2. Add variable:
-   - **Name**: `VITE_API_URL`
+   - **Name**: `VITE_API_BASE_URL`
    - **Value**: `https://your-backend-name.onrender.com` (your Render backend URL)
 3. Click **"Add"**
 
@@ -194,7 +194,7 @@ If you see CORS errors in browser console:
 ### API Calls Failing
 
 1. **Check environment variable** in Vercel dashboard
-2. **Verify it's `VITE_API_URL`** (exact name matters)
+2. **Verify it's `VITE_API_BASE_URL`** (exact name matters)
 3. **Rebuild** frontend: Settings → Deployments → Click "..." → Redeploy
 
 ### Build Fails on Vercel
@@ -210,7 +210,7 @@ If you see CORS errors in browser console:
 
 1. Go to Vercel dashboard
 2. **Settings** → **Environment Variables**
-3. Update `VITE_API_URL` with correct Render URL
+3. Update `VITE_API_BASE_URL` with correct Render URL
 4. **Redeploy**: Deployments → Click "..." → Redeploy
 
 ## Automatic Deployments
@@ -245,7 +245,7 @@ You can set different API URLs for each in Vercel settings.
 ## Production Checklist
 
 - [ ] Frontend deployed on Vercel
-- [ ] Environment variable `VITE_API_URL` set correctly
+- [ ] Environment variable `VITE_API_BASE_URL` set correctly
 - [ ] Backend CORS updated with Vercel URL
 - [ ] All API endpoints tested and working
 - [ ] No console errors in browser
