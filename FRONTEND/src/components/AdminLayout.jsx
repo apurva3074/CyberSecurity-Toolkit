@@ -9,6 +9,7 @@ import {
   HiOutlineLogout,
   HiOutlineMenuAlt2,
   HiOutlineCog,
+  HiOutlineChatAlt2,
 } from 'react-icons/hi';
 import Zentrya from '../assets/Zentrya.svg';
 
@@ -17,6 +18,7 @@ const navItems = [
   { id: 'takedowns', label: 'Takedowns', icon: HiOutlineShieldExclamation, desc: 'Manage requests' },
   { id: 'users', label: 'Users', icon: HiOutlineUsers, desc: 'User accounts' },
   { id: 'scan-logs', label: 'Scan Logs', icon: HiOutlineDocumentSearch, desc: 'Activity history' },
+  { id: 'community', label: 'Community', icon: HiOutlineChatAlt2, desc: 'Questions & answers' },
 ];
 
 export default function AdminLayout({ currentPage, onNavigate, children, pendingCount = 0 }) {

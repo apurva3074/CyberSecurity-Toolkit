@@ -4,6 +4,7 @@ import AdminOverview from './AdminOverview';
 import AdminPanel from './AdminPanel';
 import AdminUsers from './AdminUsers';
 import AdminScanLogs from './AdminScanLogs';
+import AdminCommunity from './AdminCommunity';
 
 import { API_BASE_URL } from '../config';
 const API_URL = `${API_BASE_URL}/api/takedown`;
@@ -38,6 +39,8 @@ export default function AdminDashboard() {
         return <AdminUsers />;
       case 'scan-logs':
         return <AdminScanLogs />;
+      case 'community':
+        return <AdminCommunity />;
       default:
         return <AdminOverview onNavigate={setCurrentPage} />;
     }

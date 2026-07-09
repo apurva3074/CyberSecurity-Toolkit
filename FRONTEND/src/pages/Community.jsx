@@ -11,10 +11,12 @@ import {
   HiOutlineClock,
   HiOutlineCheckCircle,
   HiOutlineQuestionMarkCircle,
+  HiOutlineTrash,
 } from 'react-icons/hi';
 
 import { API_BASE_URL } from '../config';
 import { fetchWithRetry } from '../lib/fetchWithRetry';
+import { supabase } from '../lib/supabaseClient';
 import communityImage from '../assets/community.jpg';
 const API_BASE = `${API_BASE_URL}/api/community`;
 
@@ -48,12 +50,21 @@ export default function Community() {
   const [answerBody, setAnswerBody] = useState('');
   const [expandedId, setExpandedId] = useState(null);
   const [filter, setFilter] = useState('all');
+  const [userEmail, setUserEmail] = useState('');
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserEmail(session?.user?.email || '');
+    });
+  }, []);
 
   async function loadPage(pageNumber) {
     setLoading(true);
     setError('');
     try {
-      const res = await fetchWithRetry(`${API_BASE}/questions/?page=${pageNumber}`);
+      const res = await fetchWithRetry(
+        `${API_BASE}/questions/?page=${pageNumber}&viewer_email=${encodeURIComponent(userEmail)}`
+      );
       if (!res.ok) throw new Error('Failed to load');
       const data = await res.json();
 
@@ -75,7 +86,8 @@ export default function Community() {
 
   useEffect(() => {
     loadPage(page);
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, userEmail]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -107,7 +119,7 @@ export default function Community() {
       const res = await fetchWithRetry(`${API_BASE}/questions/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle.trim(), body: newBody.trim() }),
+        body: JSON.stringify({ title: newTitle.trim(), body: newBody.trim(), author_email: userEmail }),
       });
       if (!res.ok) throw new Error('Failed');
       setPage(1);
@@ -131,10 +143,13 @@ export default function Community() {
       const res = await fetchWithRetry(`${API_BASE}/answers/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ body: answerBody.trim(), question: questionId }),
+        body: JSON.stringify({ body: answerBody.trim(), question: questionId, author_email: userEmail }),
       });
       if (!res.ok) throw new Error('Failed');
       const created = await res.json();
+      // It's this user's own answer, so they can delete it immediately —
+      // but only if we actually know their email (matches what the backend checks).
+      created.can_delete = Boolean(userEmail);
       setQuestions((prev) =>
         prev.map((q) =>
           q.id === questionId ? { ...q, answers: [...(q.answers || []), created] } : q
@@ -146,6 +161,26 @@ export default function Community() {
       setError('Failed to post answer.');
     } finally {
       setPosting(false);
+    }
+  }
+
+  async function handleDeleteAnswer(questionId, answerId) {
+    if (!window.confirm('Delete this answer?')) return;
+    try {
+      const res = await fetchWithRetry(
+        `${API_BASE}/answers/${answerId}/?requester_email=${encodeURIComponent(userEmail)}`,
+        { method: 'DELETE' }
+      );
+      if (!res.ok) throw new Error('Failed to delete');
+      setQuestions((prev) =>
+        prev.map((q) =>
+          q.id === questionId
+            ? { ...q, answers: (q.answers || []).filter((a) => a.id !== answerId) }
+            : q
+        )
+      );
+    } catch {
+      setError('Failed to delete answer. Please try again.');
     }
   }
 
@@ -338,7 +373,19 @@ export default function Community() {
                               <HiOutlineUser className="w-3.5 h-3.5 text-purple-400" />
                             </div>
                             <div className="flex-1 bg-white/5 rounded-lg p-3">
-                              <p className="text-gray-300 text-sm leading-relaxed">{a.body}</p>
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-gray-300 text-sm leading-relaxed">{a.body}</p>
+                                {a.can_delete && (
+                                  <button
+                                    onClick={() => handleDeleteAnswer(q.id, a.id)}
+                                    className="flex-shrink-0 text-gray-500 hover:text-red-400 p-1 rounded transition"
+                                    aria-label="Delete answer"
+                                    title="Delete answer"
+                                  >
+                                    <HiOutlineTrash className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </div>
                               <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">
                                 <span>{a.author_username || 'guest'}</span>
                                 <span><TimeAgo date={a.created_at} /></span>
