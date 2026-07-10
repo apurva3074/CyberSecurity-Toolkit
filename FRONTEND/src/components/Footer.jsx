@@ -23,6 +23,7 @@ export default function Footer({ onNavigate }) {
     { label: 'Blog', tab: 'blog' },
     { label: 'Glossary', tab: 'glossary' },
     { label: 'Community', tab: 'community' },
+    { label: 'Extension', tab: 'extension' },
   ];
 
   const handleScroll = (sectionId) => {

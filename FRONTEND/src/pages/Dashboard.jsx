@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 
-import { HiOutlineMail, HiOutlineLink, HiOutlineShieldCheck, HiOutlineExclamationCircle, HiOutlineUser, HiOutlineQuestionMarkCircle, HiOutlineLogout, HiOutlineX, HiOutlineMenu, HiOutlineHome, HiOutlineLightBulb, HiOutlineNewspaper, HiOutlineBookOpen, HiOutlineUserGroup } from 'react-icons/hi';
+import { HiOutlineMail, HiOutlineLink, HiOutlineShieldCheck, HiOutlineExclamationCircle, HiOutlineUser, HiOutlineQuestionMarkCircle, HiOutlineLogout, HiOutlineX, HiOutlineMenu, HiOutlineHome, HiOutlineLightBulb, HiOutlineNewspaper, HiOutlineBookOpen, HiOutlineUserGroup, HiOutlineDesktopComputer } from 'react-icons/hi';
 import UrlScanner, { toolInfo as urlInfo } from '../features/tools/UrlScanner';
 import EmailScanner, { toolInfo as emailInfo } from '../features/tools/EmailScanner';
 import MetadataFetcher, { toolInfo as metadataInfo } from '../features/tools/MetadataFetcher';
@@ -13,6 +13,7 @@ import Solutions from './Solutions';
 import Blog from './Blog';
 import Glossary from './Glossary';
 import Community from './Community';
+import Extension from './Extension';
 import Zentrya from '../assets/Zentrya.svg';
 import UrlSection from '../sections/UrlSection';
 
@@ -182,6 +183,13 @@ export default function Dashboard() {
                     >
                         Community
                     </button>
+                    <button
+                        onClick={() => { setCurrentTab('extension'); scrollToSection('extension-section'); }}
+                        aria-current={currentTab === 'extension' ? 'page' : undefined}
+                        className={`font-medium hover:underline hover:text-[#8AC0FF] text-sm md:text-base transition-colors ${currentTab === 'extension' ? 'text-[#8AC0FF]' : 'text-[#FFFFFF]'}`}
+                    >
+                        Extension
+                    </button>
                 </nav>
 
                 <div className="flex gap-1 sm:gap-2 items-center">
@@ -292,6 +300,14 @@ export default function Dashboard() {
                         >
                             <HiOutlineUserGroup className="w-5 h-5 flex-shrink-0" />
                             Community
+                        </button>
+                        <button
+                            onClick={() => { setCurrentTab('extension'); scrollToSection('extension-section'); }}
+                            aria-current={currentTab === 'extension' ? 'page' : undefined}
+                            className={`flex items-center gap-3 text-left font-medium px-4 py-3 rounded-lg hover:bg-white/5 transition-colors ${currentTab === 'extension' ? 'text-[#8AC0FF]' : 'text-white'}`}
+                        >
+                            <HiOutlineDesktopComputer className="w-5 h-5 flex-shrink-0" />
+                            Extension
                         </button>
 
                         <div className="my-1 border-t border-white/10" />
@@ -415,6 +431,8 @@ export default function Dashboard() {
                     <Glossary />
                 ) : currentTab === 'community' ? (
                     <Community />
+                ) : currentTab === 'extension' ? (
+                    <Extension />
                 ) : null}
             </main>
             <Footer onNavigate={setCurrentTab} />
