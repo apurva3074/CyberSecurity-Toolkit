@@ -97,17 +97,24 @@ export default function Extension() {
           Scan links, emails, and page metadata straight from your toolbar — no need to switch tabs to the dashboard.
         </p>
 
-        <a
-          href="/zentrya-extension.zip"
-          download
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-black font-semibold hover:bg-gray-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-200"
-        >
-          <HiOutlineDownload className="w-5 h-5" />
-          Download for Chrome / Edge
-        </a>
-        <p className="text-gray-600 text-xs mt-3">
-          Works with any Chromium-based browser (Chrome, Edge, Brave). Manual install — not yet on the Chrome Web Store.
-        </p>
+        {/* Desktop/tablet: real download. Mobile: extensions can't run here, so just point them to a computer. */}
+        <div className="hidden sm:block">
+          <a
+            href="/zentrya-extension.zip"
+            download
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-black font-semibold hover:bg-gray-100 hover:shadow-lg hover:shadow-white/10 transition-all duration-200"
+          >
+            <HiOutlineDownload className="w-5 h-5" />
+            Download for Chrome / Edge
+          </a>
+          <p className="text-gray-600 text-xs mt-3">
+            Works with any Chromium-based browser (Chrome, Edge, Brave). Manual install — not yet on the Chrome Web Store.
+          </p>
+        </div>
+        <div className="sm:hidden inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-white/5 border border-white/10 text-gray-300 text-sm">
+          <HiOutlineDesktopComputer className="w-5 h-5 text-purple-300 flex-shrink-0" />
+          We also have an extension — try it on your computer's browser.
+        </div>
       </div>
 
       {/* Features */}
